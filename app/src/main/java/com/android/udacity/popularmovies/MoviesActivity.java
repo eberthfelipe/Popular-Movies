@@ -12,7 +12,6 @@ import com.android.udacity.popularmovies.Model.ConnectNetwork;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
 public class MoviesActivity extends AppCompatActivity {
-    private ConnectNetwork connectNetwork;
     private final int MY_PERMISSIONS_INTERNET = 0;
 
     @Override
@@ -23,9 +22,9 @@ public class MoviesActivity extends AppCompatActivity {
         fetchDataFromMovieDatabase();
     }
 
-    public void fetchDataFromMovieDatabase(){
+    private void fetchDataFromMovieDatabase(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
-            connectNetwork = new ConnectNetwork();
+            ConnectNetwork connectNetwork = new ConnectNetwork();
             // get User preference for movies: popular or top rated
             int preference = 0;
             connectNetwork.execute(NetworkUtils.buildURL(preference));

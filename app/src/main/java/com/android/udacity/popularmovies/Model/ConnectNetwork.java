@@ -3,6 +3,7 @@ package com.android.udacity.popularmovies.Model;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
 import java.io.IOException;
@@ -24,13 +25,15 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
             try {
                 result = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.d(TAG, "doInBackground: " + result);
+                // Parse JSON Object
+                if(result != null){
+                    MovieDatabaseJsonUtils.getMovieDatabasePopularList(result);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                return result;
             }
         }
-        return null;
+        return result;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.android.udacity.popularmovies.Utils;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.udacity.popularmovies.BuildConfig;
@@ -15,7 +14,7 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
-    private static String TAG = NetworkUtils.class.getName();
+    private static final String TAG = NetworkUtils.class.getName();
 
     private static final String MOVIE_DATABASE_API_URL = "https://api.themoviedb.org/3";
     private static final String MOVIE_DATABASE_API_GET_POPULAR = "movie/popular";
@@ -27,7 +26,7 @@ public class NetworkUtils {
     @param userPreference based on user preference, try to get movies: popular or top rated
     @return The URL to use to query the movie database server.
      */
-    public static URL buildURL(@NonNull int userPreference){
+    public static URL buildURL(int userPreference){
         // MOVIE_DATABASE_API_GET_POPULAR or MOVIE_DATABASE_API_GET_TOP_RATED
         String requestType = getUserPreference(userPreference);
 
@@ -46,7 +45,7 @@ public class NetworkUtils {
         return url;
     }
 
-    private static String getUserPreference(@NonNull int userPreference){
+    private static String getUserPreference(int userPreference){
         switch (userPreference){
             case 0: // POPULAR
                 return MOVIE_DATABASE_API_GET_POPULAR;

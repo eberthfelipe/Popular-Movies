@@ -6,6 +6,8 @@ public class Movie {
     private boolean video, adult;
     private double vote_average, popularity;
 
+    public Movie(){}
+
     public Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
         this.id = id;
         this.vote_count = vote_count;
