@@ -3,19 +3,22 @@ package com.android.udacity.popularmovies.Model;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.android.udacity.popularmovies.MVP.MovieMVP;
+import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 // Class to perform http requests
 public class ConnectNetwork extends AsyncTask<URL, Void, String>{
-    private MovieMVP.NetworkPresenter mNetworkPresenter;
     private static final String TAG = ConnectNetwork.class.getName();
+    private MovieContract.NetworkPresenter mNetworkPresenter;
+    private ArrayList<Movie> mMovieArrayList;
 
-    public ConnectNetwork(MovieMVP.NetworkPresenter networkPresenter){
+
+    ConnectNetwork(MovieContract.NetworkPresenter networkPresenter){
         this.mNetworkPresenter = networkPresenter;
     }
 
@@ -34,7 +37,8 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
                 Log.d(TAG, "doInBackground: " + result);
                 // Parse JSON Object
                 if(result != null){
-                    MovieDatabaseJsonUtils.getMovieDatabasePopularList(result);
+                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result));
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,6 +51,7 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         mNetworkPresenter.hideProgress();
+        mNetworkPresenter.setMovieList(mMovieArrayList);
     }
 
 }

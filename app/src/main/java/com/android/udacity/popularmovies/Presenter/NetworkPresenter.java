@@ -1,11 +1,14 @@
 package com.android.udacity.popularmovies.Presenter;
 
-import com.android.udacity.popularmovies.MVP.MovieMVP;
+import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Model.NetworkModel;
 
-public class NetworkPresenter implements MovieMVP.NetworkPresenter {
-    private MovieMVP.NetworkModel networkModel;
-    private MovieMVP.ActivityView activityView;
+import java.util.ArrayList;
+
+public class NetworkPresenter implements MovieContract.NetworkPresenter {
+    private MovieContract.NetworkModel networkModel;
+    private MovieContract.ActivityView activityView;
 
     public NetworkPresenter(){
         networkModel = new NetworkModel(this);
@@ -21,7 +24,7 @@ public class NetworkPresenter implements MovieMVP.NetworkPresenter {
     //endregion
 
     //region View Interactions
-    public void setActivityView(MovieMVP.ActivityView activityView){
+    public void setActivityView(MovieContract.ActivityView activityView){
         this.activityView = activityView;
     }
 
@@ -33,6 +36,16 @@ public class NetworkPresenter implements MovieMVP.NetworkPresenter {
     @Override
     public void hideProgress() {
         activityView.hideProgress();
+    }
+
+    @Override
+    public void showMovies() {
+        activityView.showMovies();
+    }
+
+    @Override
+    public void setMovieList(ArrayList<Movie> movieArrayList) {
+        activityView.setMovieList(movieArrayList);
     }
     //endregion
 }

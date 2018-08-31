@@ -7,17 +7,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.android.udacity.popularmovies.MVP.MovieMVP;
+import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Presenter.NetworkPresenter;
 import com.android.udacity.popularmovies.R;
 
-public class MoviesActivity extends AppCompatActivity implements MovieMVP.ActivityView{
+import java.util.ArrayList;
+
+public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
+
     private final int MY_PERMISSIONS_INTERNET = 0;
     private NetworkPresenter mNetworkPresenter;
     private ProgressBar mLoadingMoviesProgressBar;
+    private RecyclerView mRecyclerView;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,11 @@ public class MoviesActivity extends AppCompatActivity implements MovieMVP.Activi
         setContentView(R.layout.activity_movies);
         mLoadingMoviesProgressBar = findViewById(R.id.pb_loading_movies);
 
+        mRecyclerView = findViewById(R.id.rv_movies_list);
+        int GRID_COLUMNS = 2;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+
         fetchDataFromMovieDatabase();
     }
 
@@ -68,6 +82,28 @@ public class MoviesActivity extends AppCompatActivity implements MovieMVP.Activi
 
     @Override
     public void hideProgress() {
-        mLoadingMoviesProgressBar.setVisibility(View.INVISIBLE);
+        mLoadingMoviesProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMovies() {
+
+    }
+
+    @Override
+    public void setMovieList(ArrayList<Movie> movieArrayList) {
+        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this);
+        mRecyclerView.setAdapter(mGridAdapter);
+    }
+
+    @Override
+    public void onListItemClick(int listItemIndex) {
+        if(mToast != null){
+            mToast.cancel();
+        }
+        String toastMessage = "Item #" + listItemIndex + " clicked.";
+        mToast = Toast.makeText( this, toastMessage, Toast.LENGTH_SHORT);
+
+        mToast.show();
     }
 }

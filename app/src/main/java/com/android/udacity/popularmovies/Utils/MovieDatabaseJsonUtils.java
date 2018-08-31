@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MovieDatabaseJsonUtils {
     private static final String TAG = MovieDatabaseJsonUtils.class.getName();
 
@@ -31,13 +33,13 @@ public class MovieDatabaseJsonUtils {
     @param retrieveJsonString JSON response from server
     @return Movies and its data
      */
-    public static Movie getMovieDatabasePopularList(@NonNull String retrieveJsonString){
+    public static ArrayList<Movie> getMovieDatabasePopularList(@NonNull String retrieveJsonString){
         final String MOVIE_DATABASE_API_PAGE = "page";
         final String MOVIE_DATABASE_API_TOTAL_RESULTS = "total_results";
         final String MOVIE_DATABASE_API_TOTAL_PAGES = "total_pages";
         final String MOVIE_DATABASE_API_RESULTS = "results";
-        Movie movie = new Movie();
-        String[] parseResultData = null;
+        Movie movie;
+        ArrayList<Movie> movieArrayList = new ArrayList<>();
 
         try {
             // TODO 1: return a Movie object after parse all JSON object
@@ -47,16 +49,17 @@ public class MovieDatabaseJsonUtils {
                 && objJson.has(MOVIE_DATABASE_API_TOTAL_RESULTS)){
 
                 JSONArray resultsJsonArray = objJson.getJSONArray(MOVIE_DATABASE_API_RESULTS);
-                parseResultData = new String[resultsJsonArray.length()];
                 JSONObject objJsonAux;
                 for (int i = 0; i < resultsJsonArray.length(); i++) {
                     objJsonAux = resultsJsonArray.getJSONObject(i);
                     Log.d(TAG, "getMovieDatabasePopularList: " + objJsonAux.toString());
+                    movie = new Movie(objJsonAux);
+                    movieArrayList.add(movie);
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return  null;
+        return movieArrayList;
     }
 }

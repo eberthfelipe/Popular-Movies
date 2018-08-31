@@ -1,6 +1,14 @@
 package com.android.udacity.popularmovies.Model;
 
+import android.util.Log;
+
+import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Movie {
+    private static final String TAG = Movie.class.getName();
     private int id, vote_count;
     private String title, poster_path, original_language, original_title, backdrop_path, overview, release_date;
     private boolean video, adult;
@@ -22,6 +30,29 @@ public class Movie {
         this.adult = adult;
         this.vote_average = vote_average;
         this.popularity = popularity;
+
+        Log.d(TAG, "Movie parse JSON: /n" + this.toString());
+    }
+
+    public Movie(JSONObject objJsonAux) {
+        try {
+            this.id = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_ID);
+            this.vote_count = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_VOTE_COUNT);
+            this.video = objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_VIDEO);
+            this.adult = objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_ADULT);
+            this.vote_average = objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_VOTE_AVERAGE);
+            this.popularity = objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_POPULARITY);
+            this.poster_path = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_POSTER_PATH);
+            this.title = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_TITLE);
+            this.original_title = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_TITLE);
+            this.original_language = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_LANGUAGE);
+            this.backdrop_path = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_BACKDROP_PATH);
+            this.overview = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_OVERVIEW);
+            this.release_date = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_RELEASE_DATE);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
