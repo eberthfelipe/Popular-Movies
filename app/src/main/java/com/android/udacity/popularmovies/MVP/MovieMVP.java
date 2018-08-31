@@ -1,7 +1,5 @@
 package com.android.udacity.popularmovies.MVP;
 
-import java.net.URL;
-
 public interface MovieMVP {
 
     //region Models
