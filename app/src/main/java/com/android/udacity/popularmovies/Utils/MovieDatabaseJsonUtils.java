@@ -40,7 +40,7 @@ public class MovieDatabaseJsonUtils {
         String[] parseResultData = null;
 
         try {
-            // TODO : return a Movie object after parse all JSON object
+            // TODO 1: return a Movie object after parse all JSON object
             JSONObject objJson = new JSONObject(retrieveJsonString);
             if(objJson.has(MOVIE_DATABASE_API_PAGE)
                 && objJson.has(MOVIE_DATABASE_API_TOTAL_PAGES)

@@ -1,4 +1,4 @@
-package com.android.udacity.popularmovies;
+package com.android.udacity.popularmovies.View;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,28 +7,34 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
-import com.android.udacity.popularmovies.Model.ConnectNetwork;
-import com.android.udacity.popularmovies.Utils.NetworkUtils;
+import com.android.udacity.popularmovies.MVP.MovieMVP;
+import com.android.udacity.popularmovies.Presenter.NetworkPresenter;
+import com.android.udacity.popularmovies.R;
 
-public class MoviesActivity extends AppCompatActivity {
+public class MoviesActivity extends AppCompatActivity implements MovieMVP.ActivityView{
     private final int MY_PERMISSIONS_INTERNET = 0;
+    private NetworkPresenter mNetworkPresenter;
+    private ProgressBar mLoadingMoviesProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies);
+        mNetworkPresenter = new NetworkPresenter();
+        mNetworkPresenter.setActivityView(this);
+        init();
+    }
 
-        fetchDataFromMovieDatabase();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void fetchDataFromMovieDatabase(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
-            ConnectNetwork connectNetwork = new ConnectNetwork();
-            // get User preference for movies: popular or top rated
-            int preference = 0;
-            connectNetwork.execute(NetworkUtils.buildURL(preference));
-
+            mNetworkPresenter.fetchDataFromMovieDatabase();
         } else {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_INTERNET);
         }
@@ -45,5 +51,23 @@ public class MoviesActivity extends AppCompatActivity {
                 }
 
         }
+    }
+
+    // Method to initialize view and visual components
+    private void init(){
+        setContentView(R.layout.activity_movies);
+        mLoadingMoviesProgressBar = findViewById(R.id.pb_loading_movies);
+
+        fetchDataFromMovieDatabase();
+    }
+
+    @Override
+    public void showProgress() {
+        mLoadingMoviesProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        mLoadingMoviesProgressBar.setVisibility(View.INVISIBLE);
     }
 }
