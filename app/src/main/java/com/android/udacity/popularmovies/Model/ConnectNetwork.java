@@ -3,6 +3,7 @@ package com.android.udacity.popularmovies.Model;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.udacity.popularmovies.MVP.MovieMVP;
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
@@ -10,11 +11,17 @@ import java.io.IOException;
 import java.net.URL;
 
 // Class to perform http requests
-public class ConnectNetwork extends AsyncTask<URL, Void, String>{
+public class ConnectNetwork extends AsyncTask<URL, Void, String> implements MovieMVP.NetworkModel {
+    private MovieMVP.NetworkPresenter networkPresenter;
     private static final String TAG = ConnectNetwork.class.getName();
+
+    public ConnectNetwork(MovieMVP.NetworkPresenter networkPresenter){
+        this.networkPresenter = networkPresenter;
+    }
 
     @Override
     protected void onPreExecute() {
+        networkPresenter.showProgress();
         super.onPreExecute();
     }
 
@@ -39,5 +46,11 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        networkPresenter.hideProgress();
+    }
+
+    @Override
+    public void fetchDataFromMovieDatabase(URL url) {
+        execute(url);
     }
 }
