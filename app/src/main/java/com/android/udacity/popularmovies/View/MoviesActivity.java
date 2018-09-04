@@ -1,6 +1,7 @@
 package com.android.udacity.popularmovies.View;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -92,8 +93,13 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     @Override
     public void setMovieList(ArrayList<Movie> movieArrayList) {
-        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this);
+        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this, mNetworkPresenter);
         mRecyclerView.setAdapter(mGridAdapter);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

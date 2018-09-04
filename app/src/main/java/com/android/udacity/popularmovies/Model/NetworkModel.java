@@ -1,5 +1,6 @@
 package com.android.udacity.popularmovies.Model;
 
+import android.content.Context;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
@@ -19,7 +20,7 @@ public class NetworkModel implements MovieContract.NetworkModel{
     }
 
     @Override
-    public ImageView retrieveImageSrc(String imgPath) {
-        return null;
+    public void retrieveImageSrc(Context context, String imgPath, ImageView imageView) {
+        NetworkUtils.buildPicassoRequest(context, imgPath, imageView);
     }
 }

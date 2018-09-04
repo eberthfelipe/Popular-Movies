@@ -1,5 +1,6 @@
 package com.android.udacity.popularmovies.MVP;
 
+import android.content.Context;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Model.Movie;
@@ -12,8 +13,8 @@ public interface MovieContract {
     interface Model { }
     interface NetworkModel{
         void fetchDataFromMovieDatabase(int preference);
-        //TODO: retrieve image from PICASSO
-        ImageView retrieveImageSrc(String imgPath);
+        //DONE: retrieve image from PICASSO
+        void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
     }
     //endregion
 
@@ -25,6 +26,7 @@ public interface MovieContract {
         //TODO: implement view data
         void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
+        Context getContext();
     }
     interface ListItemClickListener {
         void onListItemClick(int listItemIndex);
@@ -37,9 +39,11 @@ public interface MovieContract {
         void fetchDataFromMovieDatabase();
         void showProgress();
         void hideProgress();
+        Context getContext();
         //TODO: implement presenter data
         void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
+        void retrieveImageSrc(String imgPath, ImageView imageView);
     }
     //endregion
 

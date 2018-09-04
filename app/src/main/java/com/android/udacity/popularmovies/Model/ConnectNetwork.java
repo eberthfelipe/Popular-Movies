@@ -37,8 +37,7 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
                 Log.d(TAG, "doInBackground: " + result);
                 // Parse JSON Object
                 if(result != null){
-                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result));
-
+                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result, mNetworkPresenter.getContext()));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

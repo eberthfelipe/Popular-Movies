@@ -1,6 +1,8 @@
 package com.android.udacity.popularmovies.Model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 
@@ -13,10 +15,12 @@ public class Movie {
     private String title, poster_path, original_language, original_title, backdrop_path, overview, release_date;
     private boolean video, adult;
     private double vote_average, popularity;
+    //Done: Add imageView object to represent the poster of movie
+    private ImageView movie_poster;
 
-    public Movie(){}
+    Movie(){}
 
-    public Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
+    Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
         this.id = id;
         this.vote_count = vote_count;
         this.title = title;
@@ -30,11 +34,11 @@ public class Movie {
         this.adult = adult;
         this.vote_average = vote_average;
         this.popularity = popularity;
-
+        this.movie_poster = null;
         Log.d(TAG, "Movie parse JSON: /n" + this.toString());
     }
 
-    public Movie(JSONObject objJsonAux) {
+    public Movie(@NonNull JSONObject objJsonAux) {
         try {
             this.id = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_ID);
             this.vote_count = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_VOTE_COUNT);
@@ -49,7 +53,7 @@ public class Movie {
             this.backdrop_path = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_BACKDROP_PATH);
             this.overview = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_OVERVIEW);
             this.release_date = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_RELEASE_DATE);
-
+            this.movie_poster = null;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,6 +180,14 @@ public class Movie {
 
     public void setPopularity(double popularity) {
         this.popularity = popularity;
+    }
+
+    public ImageView getMovie_poster() {
+        return movie_poster;
+    }
+
+    public void setMovie_poster(ImageView movie_poster) {
+        this.movie_poster = movie_poster;
     }
 }
 

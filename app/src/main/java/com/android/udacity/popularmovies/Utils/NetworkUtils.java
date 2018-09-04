@@ -1,9 +1,13 @@
 package com.android.udacity.popularmovies.Utils;
 
+import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.BuildConfig;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +23,9 @@ public class NetworkUtils {
     private static final String MOVIE_DATABASE_API_URL = "https://api.themoviedb.org/3";
     private static final String MOVIE_DATABASE_API_GET_POPULAR = "movie/popular";
     private static final String MOVIE_DATABASE_API_GET_TOP_RATED = "movie/top_rated";
-
+    private static final String MOVIE_DATABASE_API_POSTER_URL = "http://image.tmdb.org/t/p/";
+    private static final String MOVIE_DATABASE_API_POSTER_SIZE = "/w500";
+//TODO: create a enum for  "w92", "w154", "w185", "w342", "w500", "w780" ou "original".
     private static  final String API_KEY = "api_key";
 
     /*
@@ -81,5 +87,13 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    public static void buildPicassoRequest(@NonNull Context context, String imgPath, ImageView imageView){
+//        ImageView imageView = null;
+        Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
+                + MOVIE_DATABASE_API_POSTER_SIZE
+                + imgPath)
+                .into(imageView);
     }
 }
