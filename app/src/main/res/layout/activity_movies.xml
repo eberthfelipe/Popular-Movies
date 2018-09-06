@@ -5,17 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/progressbar_margin_top"
-        android:id="@+id/pb_loading_movies"
-        android:visibility="gone"/>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/srl_refresh_movies">
 
         <android.support.v7.widget.RecyclerView

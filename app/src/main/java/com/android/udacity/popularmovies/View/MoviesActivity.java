@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,7 +26,8 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     private final int MY_PERMISSIONS_INTERNET = 0;
     private NetworkPresenter mNetworkPresenter;
-    private ProgressBar mLoadingMoviesProgressBar;
+//    private ProgressBar mLoadingMoviesProgressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private Toast mToast;
 
@@ -63,27 +65,15 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         }
     }
 
-    // Method to initialize view and visual components
-    private void init(){
-        setContentView(R.layout.activity_movies);
-        mLoadingMoviesProgressBar = findViewById(R.id.pb_loading_movies);
-
-        mRecyclerView = findViewById(R.id.rv_movies_list);
-        int GRID_COLUMNS = 2;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-
-        fetchDataFromMovieDatabase();
-    }
-
+    //region Presenter methods
     @Override
     public void showProgress() {
-        mLoadingMoviesProgressBar.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideProgress() {
-        mLoadingMoviesProgressBar.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -112,4 +102,51 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
         mToast.show();
     }
+    //endregion
+
+    // Method to initialize view and visual components
+    private void init(){
+        final int GRID_COLUMNS = 2;
+        final SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
+
+        setContentView(R.layout.activity_movies);
+        mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
+        mRecyclerView = findViewById(R.id.rv_movies_list);
+
+        mOnRefreshListener = getSwipeRefreshListener();
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        setColorScheme();
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+                mOnRefreshListener.onRefresh();
+            }
+        });
+    }
+
+    //region Swipe Methods
+    private SwipeRefreshLayout.OnRefreshListener getSwipeRefreshListener(){
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataFromMovieDatabase();
+            }
+        };
+    }
+
+    /**
+     * Method to set colors of loading icon
+     */
+    private void setColorScheme(){
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.colorGreen1,
+                R.color.colorGreen2,
+                R.color.colorGreen3);
+    }
+    //endregion
 }
