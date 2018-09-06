@@ -3,16 +3,16 @@ package com.android.udacity.popularmovies.View;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
@@ -23,11 +23,11 @@ import com.android.udacity.popularmovies.R;
 import java.util.ArrayList;
 
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
-
     private final int MY_PERMISSIONS_INTERNET = 0;
     private NetworkPresenter mNetworkPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
     private Toast mToast;
 
@@ -43,6 +43,21 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     protected void onResume() {
         super.onResume();
     }
+
+    //TODO: Add menu for sort preference
+    //region Menu methods
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+    //endregion
 
     private void fetchDataFromMovieDatabase(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
@@ -107,7 +122,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     // Method to initialize view and visual components
     private void init(){
         final int GRID_COLUMNS = 2;
-        final SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
 
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
@@ -120,6 +134,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
+        updateData();
+    }
+
+    private void updateData(){
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -129,7 +147,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         });
     }
 
-    //region Swipe Methods
+    //region SwipeRefresh Methods
     private SwipeRefreshLayout.OnRefreshListener getSwipeRefreshListener(){
         return new SwipeRefreshLayout.OnRefreshListener() {
             @Override
