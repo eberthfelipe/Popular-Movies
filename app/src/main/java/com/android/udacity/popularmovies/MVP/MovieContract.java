@@ -16,6 +16,7 @@ public interface MovieContract {
         //DONE: retrieve image from PICASSO
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
     }
+
     //endregion
 
     //region Views
@@ -35,7 +36,7 @@ public interface MovieContract {
 
     //region Presenters
     interface Presenter { }
-    interface NetworkPresenter {
+    interface MoviesPresenter {
         void fetchDataFromMovieDatabase();
         void showProgress();
         void hideProgress();

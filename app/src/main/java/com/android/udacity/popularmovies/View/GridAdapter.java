@@ -15,13 +15,13 @@ public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
 
     private ArrayList<Movie> movieArrayList;
     final private MovieContract.ListItemClickListener mListItemOnClickListener;
-    private MovieContract.NetworkPresenter mNetworkPresenter;
+    private MovieContract.MoviesPresenter mMoviesPresenter;
     //DONE: Check if it is better to add a presenter object here
 
-    GridAdapter(ArrayList<Movie> movieArrayList, MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.NetworkPresenter networkPresenter){
+    GridAdapter(ArrayList<Movie> movieArrayList, MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter){
         this.movieArrayList = new ArrayList<>(movieArrayList);
         this.mListItemOnClickListener = mListItemOnClickListener;
-        this.mNetworkPresenter = networkPresenter;
+        this.mMoviesPresenter = moviesPresenter;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
     @Override
     public void onBindViewHolder(MovieGridHolder holder, int position) {
         holder.setMovieTitle(movieArrayList.get(position).getTitle());
-        mNetworkPresenter.retrieveImageSrc(movieArrayList.get(position).getPoster_path(), holder.getMovieImageView());
+        mMoviesPresenter.retrieveImageSrc(movieArrayList.get(position).getPoster_path(), holder.getMovieImageView());
         //DONE 2: implement picasso fetch with MVP
     }
 

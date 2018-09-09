@@ -9,11 +9,11 @@ import com.android.udacity.popularmovies.Model.NetworkModel;
 
 import java.util.ArrayList;
 
-public class NetworkPresenter implements MovieContract.NetworkPresenter {
+public class MoviesPresenter implements MovieContract.MoviesPresenter {
     private MovieContract.NetworkModel mNetworkModel;
     private MovieContract.ActivityView mActivityView;
 
-    public NetworkPresenter(){
+    public MoviesPresenter(){
         mNetworkModel = new NetworkModel(this);
     }
 

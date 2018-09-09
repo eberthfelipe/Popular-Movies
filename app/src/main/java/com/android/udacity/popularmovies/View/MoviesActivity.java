@@ -17,14 +17,14 @@ import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.Movie;
-import com.android.udacity.popularmovies.Presenter.NetworkPresenter;
+import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.ArrayList;
 
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
     private final int MY_PERMISSIONS_INTERNET = 0;
-    private NetworkPresenter mNetworkPresenter;
+    private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
@@ -34,8 +34,8 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNetworkPresenter = new NetworkPresenter();
-        mNetworkPresenter.setActivityView(this);
+        mMoviesPresenter = new MoviesPresenter();
+        mMoviesPresenter.setActivityView(this);
         init();
     }
 
@@ -61,7 +61,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     private void fetchDataFromMovieDatabase(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
-            mNetworkPresenter.fetchDataFromMovieDatabase();
+            mMoviesPresenter.fetchDataFromMovieDatabase();
         } else {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_INTERNET);
         }
@@ -98,7 +98,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     @Override
     public void setMovieList(ArrayList<Movie> movieArrayList) {
-        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this, mNetworkPresenter);
+        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
         mRecyclerView.setAdapter(mGridAdapter);
     }
 

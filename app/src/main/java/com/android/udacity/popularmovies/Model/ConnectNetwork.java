@@ -14,17 +14,17 @@ import java.util.ArrayList;
 // Class to perform http requests
 public class ConnectNetwork extends AsyncTask<URL, Void, String>{
     private static final String TAG = ConnectNetwork.class.getName();
-    private MovieContract.NetworkPresenter mNetworkPresenter;
+    private MovieContract.MoviesPresenter mMoviesPresenter;
     private ArrayList<Movie> mMovieArrayList;
 
 
-    ConnectNetwork(MovieContract.NetworkPresenter networkPresenter){
-        this.mNetworkPresenter = networkPresenter;
+    ConnectNetwork(MovieContract.MoviesPresenter moviesPresenter){
+        this.mMoviesPresenter = moviesPresenter;
     }
 
     @Override
     protected void onPreExecute() {
-        mNetworkPresenter.showProgress();
+        mMoviesPresenter.showProgress();
         super.onPreExecute();
     }
 
@@ -37,7 +37,7 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
                 Log.d(TAG, "doInBackground: " + result);
                 // Parse JSON Object
                 if(result != null){
-                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result, mNetworkPresenter.getContext()));
+                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result, mMoviesPresenter.getContext()));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,8 +49,8 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        mNetworkPresenter.hideProgress();
-        mNetworkPresenter.setMovieList(mMovieArrayList);
+        mMoviesPresenter.hideProgress();
+        mMoviesPresenter.setMovieList(mMovieArrayList);
     }
 
 }

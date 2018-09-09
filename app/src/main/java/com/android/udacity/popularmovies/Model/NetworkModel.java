@@ -8,14 +8,14 @@ import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
 //class to implements NetworkModel
 public class NetworkModel implements MovieContract.NetworkModel{
-    private MovieContract.NetworkPresenter mNetworkPresenter;
+    private MovieContract.MoviesPresenter mMoviesPresenter;
 
-    public NetworkModel(MovieContract.NetworkPresenter networkPresenter){
-        this.mNetworkPresenter = networkPresenter;
+    public NetworkModel(MovieContract.MoviesPresenter moviesPresenter){
+        this.mMoviesPresenter = moviesPresenter;
     }
     @Override
     public void fetchDataFromMovieDatabase(int preference) {
-        ConnectNetwork connectNetwork = new ConnectNetwork(mNetworkPresenter);
+        ConnectNetwork connectNetwork = new ConnectNetwork(mMoviesPresenter);
         connectNetwork.execute(NetworkUtils.buildURL(preference));
     }
 
