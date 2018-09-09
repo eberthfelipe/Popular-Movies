@@ -13,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
@@ -30,6 +31,8 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
     private Toast mToast;
+    // 0 = POPULAR | 1 = TOP_RATED
+    private int mUserPreference = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +58,51 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem;
+        switch (mUserPreference){
+            case 0:
+            menuItem = menu.findItem(R.id.menu_popular);
+            menuItem.setChecked(true);
+            break;
+            case 1:
+            menuItem = menu.findItem(R.id.menu_top_rated);
+            menuItem.setChecked(true);
+            break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        item.setChecked(true);
+        switch (item.getItemId()){
+            case R.id.menu_popular:
+                if(mUserPreference != 0){
+                    setItemMenuClicked(0);
+                }
+                break;
+            case R.id.menu_top_rated:
+                if(mUserPreference != 1){
+                    setItemMenuClicked(1);
+                }
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void setItemMenuClicked(int value){
+        mUserPreference = value;
+        mMoviesPresenter.setPreferences(this, mUserPreference);
+        updateData();
     }
     //endregion
 
     private void fetchDataFromMovieDatabase(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
-            mMoviesPresenter.fetchDataFromMovieDatabase();
+            mMoviesPresenter.fetchDataFromMovieDatabase(mUserPreference);
         } else {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_INTERNET);
         }
@@ -134,6 +175,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
+        getUserPreferences();
         updateData();
     }
 
@@ -145,6 +187,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
                 mOnRefreshListener.onRefresh();
             }
         });
+    }
+
+    private void getUserPreferences(){
+        mUserPreference = mMoviesPresenter.getPreferences(this);
     }
 
     //region SwipeRefresh Methods

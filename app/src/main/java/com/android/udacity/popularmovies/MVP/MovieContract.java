@@ -16,7 +16,10 @@ public interface MovieContract {
         //DONE: retrieve image from PICASSO
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
     }
-
+    interface UserPreferenceModel {
+        int getPreferences(Context context);
+        void setPreferences(Context context, int value);
+    }
     //endregion
 
     //region Views
@@ -37,7 +40,7 @@ public interface MovieContract {
     //region Presenters
     interface Presenter { }
     interface MoviesPresenter {
-        void fetchDataFromMovieDatabase();
+        void fetchDataFromMovieDatabase(int preference);
         void showProgress();
         void hideProgress();
         Context getContext();
@@ -45,6 +48,8 @@ public interface MovieContract {
         void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
         void retrieveImageSrc(String imgPath, ImageView imageView);
+        int getPreferences(Context context);
+        void setPreferences(Context context, int value);
     }
     //endregion
 
