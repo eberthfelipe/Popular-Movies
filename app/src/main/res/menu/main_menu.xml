@@ -18,10 +18,13 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/menu_popular"
-                    android:title="@string/popular" />
+                    android:title="@string/popular"
+                    android:icon="@drawable/ic_menu_star"/>
                 <item
                     android:id="@+id/menu_top_rated"
-                    android:title="@string/top_rated" />
+                    android:title="@string/top_rated"
+                    android:icon="@drawable/ic_menu_thumb_up"/>
+
             </group>
         </menu>
     </item>
