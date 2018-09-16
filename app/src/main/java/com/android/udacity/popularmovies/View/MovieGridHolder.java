@@ -16,7 +16,7 @@ public class MovieGridHolder extends RecyclerView.ViewHolder implements View.OnC
 
     MovieGridHolder(View itemView, MovieContract.ListItemClickListener listItemClickListener) {
         super(itemView);
-        mImageMovie = itemView.findViewById(R.id.ibt_movie_poster);
+        mImageMovie = itemView.findViewById(R.id.iv_movie_poster);
         mTextViewTitle = itemView.findViewById(R.id.tv_movie_title);
         mListItemOnClickListener = listItemClickListener;
         itemView.setOnClickListener(this);

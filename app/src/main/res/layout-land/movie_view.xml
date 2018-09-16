@@ -7,7 +7,7 @@
     >
 
     <ImageView
-        android:id="@+id/ibt_movie_poster"
+        android:id="@+id/iv_movie_poster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ibt_movie_poster"
+        android:layout_below="@id/iv_movie_poster"
         android:textSize="@dimen/title_movie"
         android:textColor="@color/primary_text"
         android:layout_marginTop="@dimen/margin_title"
