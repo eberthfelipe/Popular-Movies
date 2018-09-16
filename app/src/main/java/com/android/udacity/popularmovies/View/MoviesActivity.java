@@ -3,6 +3,7 @@ package com.android.udacity.popularmovies.View;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -45,9 +46,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onResume() {
         super.onResume();
+        viewCheckGridForOrientation();
     }
 
-    //TODO: Add menu for sort preference
+    //DONE: Add menu for sort preference
     //region Menu methods
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,8 +164,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     // Method to initialize view and visual components
     private void init(){
-        final int GRID_COLUMNS = 2;
-
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
@@ -172,11 +172,20 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         setColorScheme();
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, GRID_COLUMNS);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-
         getUserPreferences();
         updateData();
+    }
+
+    private void viewCheckGridForOrientation(){
+        int grid_columns = 2;  // In portrait
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            grid_columns = 3;
+        }
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, grid_columns);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
     }
 
     private void updateData(){

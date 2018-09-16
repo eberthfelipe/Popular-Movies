@@ -27,7 +27,6 @@ public interface MovieContract {
     interface ActivityView{
         void showProgress();
         void hideProgress();
-        //TODO: implement view data
         void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
         Context getContext();
@@ -44,7 +43,6 @@ public interface MovieContract {
         void showProgress();
         void hideProgress();
         Context getContext();
-        //TODO: implement presenter data
         void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
         void retrieveImageSrc(String imgPath, ImageView imageView);

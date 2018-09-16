@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         android:contentDescription="@string/content_description_movie_poster"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:foregroundGravity="center_horizontal"
         />
 
