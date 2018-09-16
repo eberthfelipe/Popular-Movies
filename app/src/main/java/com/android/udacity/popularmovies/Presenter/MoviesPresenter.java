@@ -41,6 +41,11 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
         }
         mUserPreferenceModel.setPreferences(context, value);
     }
+
+    @Override
+    public void retrieveImageSrc(String imgPath, ImageView imageView) {
+        mNetworkModel.retrieveImageSrc(getContext(), imgPath, imageView);
+    }
     //endregion
 
     //region View Interactions
@@ -64,20 +69,14 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     }
 
     @Override
-    public void showMovies() {
-        mActivityView.showMovies();
-    }
-
-    @Override
     public void setMovieList(ArrayList<Movie> movieArrayList) {
         mActivityView.setMovieList(movieArrayList);
 
     }
 
     @Override
-    public void retrieveImageSrc(String imgPath, ImageView imageView) {
-        mNetworkModel.retrieveImageSrc(getContext(), imgPath, imageView);
+    public void showNoInternetConnection(boolean show) {
+        mActivityView.showNoInternetConnection(show);
     }
-
     //endregion
 }

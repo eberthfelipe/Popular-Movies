@@ -15,8 +15,14 @@ public class NetworkModel implements MovieContract.NetworkModel{
     }
     @Override
     public void fetchDataFromMovieDatabase(int preference) {
-        ConnectNetwork connectNetwork = new ConnectNetwork(mMoviesPresenter);
-        connectNetwork.execute(NetworkUtils.buildURL(preference));
+        if(NetworkUtils.checkInternetConnection(mMoviesPresenter.getContext())){
+            mMoviesPresenter.showNoInternetConnection(false);
+            ConnectNetwork connectNetwork = new ConnectNetwork(mMoviesPresenter);
+            connectNetwork.execute(NetworkUtils.buildURL(preference));
+        } else {
+            //Done: implement network problem view
+            mMoviesPresenter.showNoInternetConnection(true);
+        }
     }
 
     @Override

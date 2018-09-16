@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public interface MovieContract {
 
     //region Models
-    interface Model { }
     interface NetworkModel{
         void fetchDataFromMovieDatabase(int preference);
         //DONE: retrieve image from PICASSO
@@ -23,13 +22,12 @@ public interface MovieContract {
     //endregion
 
     //region Views
-    interface View { }
     interface ActivityView{
         void showProgress();
         void hideProgress();
-        void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
         Context getContext();
+        void showNoInternetConnection(boolean show);
     }
     interface ListItemClickListener {
         void onListItemClick(int listItemIndex);
@@ -37,17 +35,16 @@ public interface MovieContract {
     //endregion
 
     //region Presenters
-    interface Presenter { }
     interface MoviesPresenter {
         void fetchDataFromMovieDatabase(int preference);
         void showProgress();
         void hideProgress();
         Context getContext();
-        void showMovies();
         void setMovieList(ArrayList<Movie> movieArrayList);
         void retrieveImageSrc(String imgPath, ImageView imageView);
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
+        void showNoInternetConnection(boolean show);
     }
     //endregion
 

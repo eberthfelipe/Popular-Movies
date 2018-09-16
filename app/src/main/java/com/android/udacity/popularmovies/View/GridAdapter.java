@@ -33,9 +33,11 @@ public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
 
     @Override
     public void onBindViewHolder(MovieGridHolder holder, int position) {
-        holder.setMovieTitle(movieArrayList.get(position).getTitle());
-        mMoviesPresenter.retrieveImageSrc(movieArrayList.get(position).getPoster_path(), holder.getMovieImageView());
-        //DONE 2: implement picasso fetch with MVP
+        if(movieArrayList != null) {
+            holder.setMovieTitle(movieArrayList.get(position).getTitle());
+            mMoviesPresenter.retrieveImageSrc(movieArrayList.get(position).getPoster_path(), holder.getMovieImageView());
+            //DONE 2: implement picasso fetch with MVP
+        }
     }
 
     @Override

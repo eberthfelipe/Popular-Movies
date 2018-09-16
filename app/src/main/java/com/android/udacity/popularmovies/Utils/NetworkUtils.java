@@ -1,6 +1,8 @@
 package com.android.udacity.popularmovies.Utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -95,5 +97,20 @@ public class NetworkUtils {
                 + MOVIE_DATABASE_API_POSTER_SIZE
                 + imgPath)
                 .into(imageView);
+    }
+
+    public static boolean checkInternetConnection(Context context){
+        boolean isConnected;
+        NetworkInfo activeNetwork = null;
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if(cm != null){
+            activeNetwork = cm.getActiveNetworkInfo();
+        }
+        isConnected = activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
+        Log.d(TAG, "checkInternetConnection: " + isConnected);
+        return isConnected;
     }
 }

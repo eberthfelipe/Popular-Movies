@@ -50,10 +50,8 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         mMoviesPresenter.hideProgress();
-        //TODO: treat when mMovieArrayList is null and has nothing to show. Still have to show some feedback to user
-        if(mMovieArrayList != null){
-            mMoviesPresenter.setMovieList(mMovieArrayList);
-        }
+        //DONE: treat when mMovieArrayList is null and has nothing to show. Still have to show some feedback to user
+        mMoviesPresenter.setMovieList(mMovieArrayList);
     }
 
 }

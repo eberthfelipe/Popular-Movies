@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
@@ -31,6 +33,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
+    private LinearLayout mLinearLayout;
     private Toast mToast;
     // 0 = POPULAR | 1 = TOP_RATED
     private int mUserPreference = 0;
@@ -135,13 +138,30 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     @Override
-    public void showMovies() {
-
+    public void showNoInternetConnection(boolean show) {
+        if (show) {
+            mLinearLayout.setVisibility(View.VISIBLE);
+            if(mSwipeRefreshLayout.isRefreshing()){
+                hideProgress();
+            }
+            mRecyclerView.setVisibility(View.GONE);
+        }
+        else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mLinearLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void setMovieList(ArrayList<Movie> movieArrayList) {
-        GridAdapter mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
+        GridAdapter mGridAdapter;
+        if(movieArrayList != null) {
+            mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
+        } else {
+            //DONE: implement try again for null array
+            mGridAdapter = new GridAdapter(new ArrayList<Movie>(), this, mMoviesPresenter);
+            Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
+        }
         mRecyclerView.setAdapter(mGridAdapter);
     }
 
@@ -167,6 +187,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
+        mLinearLayout = findViewById(R.id.ll_unavailable_internet);
 
         mOnRefreshListener = getSwipeRefreshListener();
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
