@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/tv_movie_title_detail"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:background="@color/menu_background"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:textAllCaps="false"
+        android:textColor="@color/text_color_primary"
+        android:textSize="@dimen/title_movie_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_movie_poster_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/content_description_movie_poster"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail" />
+
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/title_movie"
+        app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail" />
+
+    <TextView
+        android:id="@+id/tv_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/average_movie_evaluation"
+        app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
+
+    <TextView
+        android:id="@+id/tv_movie_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:text="you can either subclass imageview and implement serializable interface and pass it with this way or you can pass resource id(int) of imageview to another activity then load that activity's imageview with this resource id or you make imageview static and then at the other acitvity you simply call it via FirstClass.imageView"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/average_movie_evaluation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_average"
+        app:layout_constraintVertical_bias="0.0" />
+</android.support.constraint.ConstraintLayout>
