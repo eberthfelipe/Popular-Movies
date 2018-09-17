@@ -1,5 +1,7 @@
 package com.android.udacity.popularmovies.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
@@ -9,7 +11,7 @@ import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Movie {
+public class Movie implements Parcelable{
     private static final String TAG = Movie.class.getName();
     private int id, vote_count;
     private String title, poster_path, original_language, original_title, backdrop_path, overview, release_date;
@@ -18,25 +20,25 @@ public class Movie {
     //Done: Add imageView object to represent the poster of movie
     private ImageView movie_poster;
 
-    Movie(){}
+    public Movie(){}
 
-    Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
-        this.id = id;
-        this.vote_count = vote_count;
-        this.title = title;
-        this.poster_path = poster_path;
-        this.original_language = original_language;
-        this.original_title = original_title;
-        this.backdrop_path = backdrop_path;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.video = video;
-        this.adult = adult;
-        this.vote_average = vote_average;
-        this.popularity = popularity;
-        this.movie_poster = null;
-        Log.d(TAG, "Movie parse JSON: /n" + this.toString());
-    }
+//    Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
+//        this.id = id;
+//        this.vote_count = vote_count;
+//        this.title = title;
+//        this.poster_path = poster_path;
+//        this.original_language = original_language;
+//        this.original_title = original_title;
+//        this.backdrop_path = backdrop_path;
+//        this.overview = overview;
+//        this.release_date = release_date;
+//        this.video = video;
+//        this.adult = adult;
+//        this.vote_average = vote_average;
+//        this.popularity = popularity;
+//        this.movie_poster = null;
+//        Log.d(TAG, "Movie parse JSON: /n" + this.toString());
+//    }
 
     public Movie(@NonNull JSONObject objJsonAux) {
         try {
@@ -57,6 +59,23 @@ public class Movie {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public Movie(Movie movie) {
+        this.id = movie.id;
+        this.vote_count = movie.vote_count;
+        this.title = movie.title;
+        this.poster_path = movie.poster_path;
+        this.original_language = movie.original_language;
+        this.original_title = movie.original_title;
+        this.backdrop_path = movie.backdrop_path;
+        this.overview = movie.overview;
+        this.release_date = movie.release_date;
+        this.video = movie.video;
+        this.adult = movie.adult;
+        this.vote_average = movie.vote_average;
+        this.popularity = movie.popularity;
+        this.movie_poster = movie.movie_poster;
     }
 
     @Override
@@ -189,5 +208,41 @@ public class Movie {
     public void setMovie_poster(ImageView movie_poster) {
         this.movie_poster = movie_poster;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.overview);
+        dest.writeDouble(this.vote_average);
+        dest.writeString(this.release_date);
+    }
+
+    private Movie(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.poster_path = in.readString();
+        this.overview = in.readString();
+        this.vote_average = in.readDouble();
+        this.release_date = in.readString();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR
+            = new Parcelable.Creator<Movie>() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
 }
 

@@ -1,6 +1,7 @@
 package com.android.udacity.popularmovies.MVP;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Model.Movie;
@@ -30,7 +31,7 @@ public interface MovieContract {
         void showNoInternetConnection(boolean show);
     }
     interface ListItemClickListener {
-        void onListItemClick(int listItemIndex);
+        void onListItemClick(int listItemIndex, Drawable drawable);
     }
     //endregion
 

@@ -24,6 +24,12 @@ public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
         this.mMoviesPresenter = moviesPresenter;
     }
 
+    GridAdapter(MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter){
+        this.movieArrayList = new ArrayList<>();
+        this.mListItemOnClickListener = mListItemOnClickListener;
+        this.mMoviesPresenter = moviesPresenter;
+    }
+
     @Override
     public MovieGridHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -45,4 +51,7 @@ public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
         return movieArrayList.size();
     }
 
+    public ArrayList<Movie> getMovieArrayList(){
+        return movieArrayList;
+    }
 }

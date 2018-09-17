@@ -33,6 +33,6 @@ public class MovieGridHolder extends RecyclerView.ViewHolder implements View.OnC
     @Override
     public void onClick(View v) {
         int clickPosition = getAdapterPosition();
-        mListItemOnClickListener.onListItemClick(clickPosition);
+        mListItemOnClickListener.onListItemClick(clickPosition, mImageMovie.getDrawable());
     }
 }

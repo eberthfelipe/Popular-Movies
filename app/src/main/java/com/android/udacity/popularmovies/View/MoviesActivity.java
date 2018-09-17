@@ -2,8 +2,13 @@ package com.android.udacity.popularmovies.View;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -24,9 +29,13 @@ import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
+
+    public static final String MOVIE_OBJECT = "movie_object";
+    public static final String MOVIE_IMAGE = "movie_img";
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
@@ -34,7 +43,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
     private LinearLayout mLinearLayout;
-    private Toast mToast;
     // 0 = POPULAR | 1 = TOP_RATED
     private int mUserPreference = 0;
 
@@ -159,7 +167,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
         } else {
             //DONE: implement try again for null array
-            mGridAdapter = new GridAdapter(new ArrayList<Movie>(), this, mMoviesPresenter);
+            mGridAdapter = new GridAdapter(this, mMoviesPresenter);
             Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
         }
         mRecyclerView.setAdapter(mGridAdapter);
@@ -171,14 +179,15 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     @Override
-    public void onListItemClick(int listItemIndex) {
-        if(mToast != null){
-            mToast.cancel();
-        }
-        String toastMessage = "Item #" + listItemIndex + " clicked.";
-        mToast = Toast.makeText( this, toastMessage, Toast.LENGTH_SHORT);
+    public void onListItemClick(int listItemIndex, Drawable drawable) {
+        GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
+        Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
-        mToast.show();
+        Intent intent = new Intent(this, MoviesDetailActivity.class);
+        intent.putExtra(MOVIE_OBJECT, movie);
+//        intent.putExtra(MOVIE_IMAGE, getByteArrayFromImageClicked(bitmap));
+        startActivity(intent);
     }
     //endregion
 
@@ -187,6 +196,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
+        mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter));
         mLinearLayout = findViewById(R.id.ll_unavailable_internet);
 
         mOnRefreshListener = getSwipeRefreshListener();
@@ -221,6 +231,12 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     private void getUserPreferences(){
         mUserPreference = mMoviesPresenter.getPreferences(this);
+    }
+
+    private byte[] getByteArrayFromImageClicked(@NonNull Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
     //region SwipeRefresh Methods
