@@ -46,6 +46,11 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     public void retrieveImageSrc(String imgPath, ImageView imageView) {
         mNetworkModel.retrieveImageSrc(getContext(), imgPath, imageView);
     }
+
+    @Override
+    public void retrieveImageSrc(Context context, String imgPath, ImageView imageView) {
+        mNetworkModel.retrieveImageSrc(context, imgPath, imageView);
+    }
     //endregion
 
     //region View Interactions
@@ -65,7 +70,9 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
 
     @Override
     public Context getContext() {
-        return mActivityView.getContext();
+        if(mActivityView != null)
+            return mActivityView.getContext();
+        return null;
     }
 
     @Override

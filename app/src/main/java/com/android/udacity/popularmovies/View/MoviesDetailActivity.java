@@ -1,14 +1,14 @@
 package com.android.udacity.popularmovies.View;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
 public class MoviesDetailActivity extends AppCompatActivity {
@@ -42,16 +42,21 @@ public class MoviesDetailActivity extends AppCompatActivity {
     }
 
     private void setData(Intent intent) {
+        MoviesPresenter moviesPresenter = new MoviesPresenter();
         Movie movie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
-//        byte[] byteArrayPosterImage = intent.getByteArrayExtra(MoviesActivity.MOVIE_IMAGE);
 
         mTextViewMovieTitle.setText(movie.getTitle());
-        mTextViewMovieReleaseDate.setText(movie.getRelease_date());
+        mTextViewMovieReleaseDate.setText(parseDate(movie.getRelease_date()));
         mTextViewMovieAverage.setText(String.valueOf(movie.getVote_average()));
         mTextViewMovieDescription.setText(movie.getOverview());
-//TODO: Fix load poster image bug
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArrayPosterImage, 0, byteArrayPosterImage.length);
-//        mImageViewMoviewPoster.setImageBitmap(bitmap);
+        mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
+        //DONE: Fix load poster image bug
+        moviesPresenter.retrieveImageSrc(this, movie.getPoster_path(), mImageViewMoviewPoster);
+    }
+
+    //Method to get only the year of movies
+    private String parseDate(String date){
+        return date.substring(0,4);
     }
 
 }
