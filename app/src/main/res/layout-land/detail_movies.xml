@@ -23,11 +23,13 @@
     <ImageView
         android:id="@+id/iv_movie_poster_detail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/content_description_movie_poster"
         android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail" />
 
@@ -40,7 +42,9 @@
         android:textColor="@color/primary_text"
         android:textSize="@dimen/title_movie"
         app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
-        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/tv_average"
@@ -63,7 +67,6 @@
         android:layout_marginTop="16dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
-        android:text="you can either subclass imageview and implement serializable interface and pass it with this way or you can pass resource id(int) of imageview to another activity then load that activity's imageview with this resource id or you make imageview static and then at the other acitvity you simply call it via FirstClass.imageView"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/average_movie_evaluation"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,5 +74,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
         app:layout_constraintTop_toBottomOf="@+id/tv_average"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:scrollbars="vertical"
+        />
 </android.support.constraint.ConstraintLayout>
