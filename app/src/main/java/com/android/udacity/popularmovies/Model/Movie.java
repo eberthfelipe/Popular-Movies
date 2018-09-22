@@ -219,6 +219,7 @@ public class Movie implements Parcelable{
         dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeString(this.poster_path);
+        dest.writeString(this.backdrop_path);
         dest.writeString(this.overview);
         dest.writeDouble(this.vote_average);
         dest.writeString(this.release_date);
@@ -228,6 +229,7 @@ public class Movie implements Parcelable{
         this.id = in.readInt();
         this.title = in.readString();
         this.poster_path = in.readString();
+        this.backdrop_path = in.readString();
         this.overview = in.readString();
         this.vote_average = in.readDouble();
         this.release_date = in.readString();

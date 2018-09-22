@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,13 +26,12 @@ import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
 
     public static final String MOVIE_OBJECT = "movie_object";
-    public static final String MOVIE_IMAGE = "movie_img";
+    public static final String USER_PREFERENCE = "user_preference";
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
@@ -52,12 +48,34 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         mMoviesPresenter = new MoviesPresenter();
         mMoviesPresenter.setActivityView(this);
         init();
+        if(savedInstanceState == null){
+            getUserPreferences();
+            updateData();
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         viewCheckGridForOrientation();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
+        setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mRecyclerView != null){
+            GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
+            outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
+        }
+        outState.putInt(USER_PREFERENCE, mUserPreference);
+        super.onSaveInstanceState(outState);
     }
 
     //DONE: Add menu for sort preference
@@ -182,7 +200,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     public void onListItemClick(int listItemIndex, Drawable drawable) {
         GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
         Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
         Intent intent = new Intent(this, MoviesDetailActivity.class);
         intent.putExtra(MOVIE_OBJECT, movie);
@@ -203,10 +220,9 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         setColorScheme();
 
-        getUserPreferences();
-        updateData();
     }
 
+    //organize Grid for different configs
     private void viewCheckGridForOrientation(){
         int grid_columns = 2;  // In portrait
         int orientation = getResources().getConfiguration().orientation;
@@ -231,12 +247,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     private void getUserPreferences(){
         mUserPreference = mMoviesPresenter.getPreferences(this);
-    }
-
-    private byte[] getByteArrayFromImageClicked(@NonNull Bitmap bitmap){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
     }
 
     //region SwipeRefresh Methods
