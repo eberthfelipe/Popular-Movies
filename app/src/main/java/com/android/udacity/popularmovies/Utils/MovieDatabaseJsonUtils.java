@@ -1,6 +1,5 @@
 package com.android.udacity.popularmovies.Utils;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -34,7 +33,7 @@ public class MovieDatabaseJsonUtils {
     @param retrieveJsonString JSON response from server
     @return Movies and its data
      */
-    public static ArrayList<Movie> getMovieDatabasePopularList(@NonNull String retrieveJsonString, @NonNull Context context){
+    public static ArrayList<Movie> getMovieDatabasePopularList(@NonNull String retrieveJsonString){
         final String MOVIE_DATABASE_API_PAGE = "page";
         final String MOVIE_DATABASE_API_TOTAL_RESULTS = "total_results";
         final String MOVIE_DATABASE_API_TOTAL_PAGES = "total_pages";
@@ -55,7 +54,6 @@ public class MovieDatabaseJsonUtils {
                     objJsonAux = resultsJsonArray.getJSONObject(i);
                     Log.d(TAG, "getMovieDatabasePopularList: " + objJsonAux.toString());
                     movie = new Movie(objJsonAux);
-//                    movie.setMovie_poster(NetworkUtils.buildPicassoRequest(context, movie.getPoster_path()));
                     movieArrayList.add(movie);
                 }
             }

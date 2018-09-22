@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 // Class to perform http requests
-public class ConnectNetwork extends AsyncTask<URL, Void, String>{
+class ConnectNetwork extends AsyncTask<URL, Void, String>{
     private static final String TAG = ConnectNetwork.class.getName();
     private MovieContract.MoviesPresenter mMoviesPresenter;
     private ArrayList<Movie> mMovieArrayList;
@@ -37,7 +37,7 @@ public class ConnectNetwork extends AsyncTask<URL, Void, String>{
                 Log.d(TAG, "doInBackground: " + result);
                 // Parse JSON Object
                 if(result != null){
-                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result, mMoviesPresenter.getContext()));
+                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

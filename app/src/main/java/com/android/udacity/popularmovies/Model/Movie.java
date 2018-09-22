@@ -3,7 +3,6 @@ package com.android.udacity.popularmovies.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
@@ -12,33 +11,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Movie implements Parcelable{
-    private static final String TAG = Movie.class.getName();
     private int id, vote_count;
     private String title, poster_path, original_language, original_title, backdrop_path, overview, release_date;
     private boolean video, adult;
     private double vote_average, popularity;
     //Done: Add imageView object to represent the poster of movie
     private ImageView movie_poster;
-
-    public Movie(){}
-
-//    Movie(int id, int vote_count, String title, String poster_path, String original_language, String original_title, String backdrop_path, String overview, String release_date, boolean video, boolean adult, double vote_average, double popularity) {
-//        this.id = id;
-//        this.vote_count = vote_count;
-//        this.title = title;
-//        this.poster_path = poster_path;
-//        this.original_language = original_language;
-//        this.original_title = original_title;
-//        this.backdrop_path = backdrop_path;
-//        this.overview = overview;
-//        this.release_date = release_date;
-//        this.video = video;
-//        this.adult = adult;
-//        this.vote_average = vote_average;
-//        this.popularity = popularity;
-//        this.movie_poster = null;
-//        Log.d(TAG, "Movie parse JSON: /n" + this.toString());
-//    }
 
     public Movie(@NonNull JSONObject objJsonAux) {
         try {

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
 
     public static final String MOVIE_OBJECT = "movie_object";
-    public static final String USER_PREFERENCE = "user_preference";
+    private static final String USER_PREFERENCE = "user_preference";
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;

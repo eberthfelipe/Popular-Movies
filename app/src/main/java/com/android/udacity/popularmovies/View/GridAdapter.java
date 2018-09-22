@@ -11,7 +11,7 @@ import com.android.udacity.popularmovies.R;
 
 import java.util.ArrayList;
 
-public class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
+class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
 
     private ArrayList<Movie> movieArrayList;
     final private MovieContract.ListItemClickListener mListItemOnClickListener;

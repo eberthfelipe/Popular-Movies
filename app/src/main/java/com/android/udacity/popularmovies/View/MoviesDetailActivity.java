@@ -11,10 +11,12 @@ import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
+import java.util.Objects;
+
 public class MoviesDetailActivity extends AppCompatActivity {
 
     private TextView mTextViewMovieTitle, mTextViewMovieReleaseDate, mTextViewMovieAverage, mTextViewMovieDescription;
-    private ImageView mImageViewMoviewPoster;
+    private ImageView mImageViewMoviePoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +37,9 @@ public class MoviesDetailActivity extends AppCompatActivity {
         mTextViewMovieReleaseDate = findViewById(R.id.tv_release_date);
         mTextViewMovieAverage = findViewById(R.id.tv_average);
         mTextViewMovieDescription = findViewById(R.id.tv_movie_description);
-        mImageViewMoviewPoster = findViewById(R.id.iv_movie_poster_detail);
+        mImageViewMoviePoster = findViewById(R.id.iv_movie_poster_detail);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
@@ -51,7 +53,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
         mTextViewMovieDescription.setText(movie.getOverview());
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
         //DONE: Fix load poster image bug
-        moviesPresenter.retrieveImageSrc(this, movie.getPoster_path(), mImageViewMoviewPoster);
+        moviesPresenter.retrieveImageSrc(this, movie.getPoster_path(), mImageViewMoviePoster);
     }
 
     //Method to get only the year of movies

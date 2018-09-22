@@ -31,7 +31,7 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
         if(mUserPreferenceModel == null){
             mUserPreferenceModel = new UserPreferenceModel();
         }
-        return mUserPreferenceModel.getPreferences(getContext());
+        return mUserPreferenceModel.getPreferences(context);
     }
 
     @Override

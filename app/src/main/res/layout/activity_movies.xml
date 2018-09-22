@@ -10,13 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/srl_refresh_movies">
 
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/rv_movies_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:visibility="visible"-->
-            <!--tools:listitem="@layout/movie_view" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

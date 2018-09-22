@@ -9,7 +9,6 @@
         >
         <menu>
             <item android:title="@string/sort"
-                android:id="@+id/teste"
                 android:enabled="false"
                 android:icon="@drawable/ic_menu_filter"
                 app:showAsAction="ifRoom"
