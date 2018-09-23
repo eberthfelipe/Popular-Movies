@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="content_description_movie_poster">Movie Poster</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="sort">Sort</string>
+    <string name="try_again">Something wrong happened. Please, try again!</string>
+    <string name="internet_off">No Internet Connection!</string>
+</resources>
