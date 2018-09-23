@@ -1,2 +1,2 @@
 # Popular-Movies
-First project from udacity nanodegree
+First and Second project from udacity nanodegree
