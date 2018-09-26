@@ -48,12 +48,12 @@ public class MoviesDetailActivity extends AppCompatActivity {
         Movie movie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
 
         mTextViewMovieTitle.setText(movie.getTitle());
-        mTextViewMovieReleaseDate.setText(parseDate(movie.getRelease_date()));
-        mTextViewMovieAverage.setText(String.valueOf(movie.getVote_average()));
+        mTextViewMovieReleaseDate.setText(parseDate(movie.getReleaseDate()));
+        mTextViewMovieAverage.setText(String.valueOf(movie.getVoteAverage()));
         mTextViewMovieDescription.setText(movie.getOverview());
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
         //DONE: Fix load poster image bug
-        moviesPresenter.retrieveImageSrc(this, movie.getPoster_path(), mImageViewMoviePoster);
+        moviesPresenter.retrieveImageSrc(this, movie.getPosterPath(), mImageViewMoviePoster);
     }
 
     //Method to get only the year of movies

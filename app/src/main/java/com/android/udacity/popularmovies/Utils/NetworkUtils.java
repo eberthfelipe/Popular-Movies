@@ -26,9 +26,9 @@ public class NetworkUtils {
     private static final String MOVIE_DATABASE_API_GET_POPULAR = "movie/popular";
     private static final String MOVIE_DATABASE_API_GET_TOP_RATED = "movie/top_rated";
     private static final String MOVIE_DATABASE_API_POSTER_URL = "http://image.tmdb.org/t/p/";
+    //Poster sizes:  "w92", "w154", "w185", "w342", "w500", "w780" ou "original".
     private static final String MOVIE_DATABASE_API_POSTER_SIZE = "/w500";
-//TODO: create a enum for  "w92", "w154", "w185", "w342", "w500", "w780" ou "original".
-    private static  final String API_KEY = "api_key";
+    private static final String API_KEY = "api_key";
 
     /*
     @param userPreference based on user preference, try to get movies: popular or top rated

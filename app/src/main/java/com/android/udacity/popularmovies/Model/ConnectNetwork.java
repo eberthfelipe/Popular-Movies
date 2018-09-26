@@ -12,10 +12,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 // Class to perform http requests
-class ConnectNetwork extends AsyncTask<URL, Void, String>{
+class ConnectNetwork extends AsyncTask<URL, Void, ArrayList<Movie>>{
     private static final String TAG = ConnectNetwork.class.getName();
     private MovieContract.MoviesPresenter mMoviesPresenter;
-    private ArrayList<Movie> mMovieArrayList;
 
 
     ConnectNetwork(MovieContract.MoviesPresenter moviesPresenter){
@@ -29,26 +28,26 @@ class ConnectNetwork extends AsyncTask<URL, Void, String>{
     }
 
     @Override
-    protected String doInBackground(URL... urls) {
-        String result = null;
+    protected ArrayList<Movie> doInBackground(URL... urls) {
+        String result;
         for (URL url: urls) {
             try {
                 result = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.d(TAG, "doInBackground: " + result);
                 // Parse JSON Object
                 if(result != null){
-                    mMovieArrayList = new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result));
+                    return new ArrayList<>(MovieDatabaseJsonUtils.getMovieDatabasePopularList(result));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return result;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(ArrayList<Movie> mMovieArrayList) {
+        super.onPostExecute(mMovieArrayList);
         mMoviesPresenter.hideProgress();
         //DONE: treat when mMovieArrayList is null and has nothing to show. Still have to show some feedback to user
         mMoviesPresenter.setMovieList(mMovieArrayList);

@@ -13,6 +13,7 @@ public class NetworkModel implements MovieContract.NetworkModel{
     public NetworkModel(MovieContract.MoviesPresenter moviesPresenter){
         this.mMoviesPresenter = moviesPresenter;
     }
+
     @Override
     public void fetchDataFromMovieDatabase(int preference) {
         if(NetworkUtils.checkInternetConnection(mMoviesPresenter.getContext())){

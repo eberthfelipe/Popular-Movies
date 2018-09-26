@@ -146,7 +146,8 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     fetchDataFromMovieDatabase();
                 } else {
-                    finish();
+                    //DONE: show a message to user instead of close the app
+                    Toast.makeText(this, R.string.permissions, Toast.LENGTH_LONG).show();
                 }
 
         }
@@ -203,7 +204,6 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
         Intent intent = new Intent(this, MoviesDetailActivity.class);
         intent.putExtra(MOVIE_OBJECT, movie);
-//        intent.putExtra(MOVIE_IMAGE, getByteArrayFromImageClicked(bitmap));
         startActivity(intent);
     }
     //endregion
