@@ -11,66 +11,71 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Movie implements Parcelable{
-    private int id, vote_count;
-    private String title, poster_path, original_language, original_title, backdrop_path, overview, release_date;
-    private boolean video, adult;
-    private double vote_average, popularity;
+    private int id;
+    private int voteCount;
+    private String title;
+    private String posterPath;
+    private String originalLanguage;
+    private String originalTitle;
+    private String backdropPath;
+    private String overview;
+    private String releaseDate;
+    private boolean video;
+    private boolean adult;
+    private double voteAverage;
+    private double popularity;
     //Done: Add imageView object to represent the poster of movie
-    private ImageView movie_poster;
+    private ImageView moviePoster;
 
-    public Movie(@NonNull JSONObject objJsonAux) {
-        try {
-            this.id = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_ID);
-            this.vote_count = objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_VOTE_COUNT);
-            this.video = objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_VIDEO);
-            this.adult = objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_ADULT);
-            this.vote_average = objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_VOTE_AVERAGE);
-            this.popularity = objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_POPULARITY);
-            this.poster_path = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_POSTER_PATH);
-            this.title = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_TITLE);
-            this.original_title = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_TITLE);
-            this.original_language = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_LANGUAGE);
-            this.backdrop_path = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_BACKDROP_PATH);
-            this.overview = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_OVERVIEW);
-            this.release_date = objJsonAux.getString(MovieDatabaseJsonUtils.JSON_RELEASE_DATE);
-            this.movie_poster = null;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public Movie() {
+        this.id = 0;
+        this.voteCount = 0;
+        this.title = "";
+        this.posterPath = "";
+        this.originalLanguage = "";
+        this.originalTitle = "";
+        this.backdropPath = "";
+        this.overview = "";
+        this.releaseDate = "";
+        this.video = false;
+        this.adult = false;
+        this.voteAverage = 0.0;
+        this.popularity = 0.0;
+        this.moviePoster = null;
     }
 
     public Movie(Movie movie) {
         this.id = movie.id;
-        this.vote_count = movie.vote_count;
+        this.voteCount = movie.voteCount;
         this.title = movie.title;
-        this.poster_path = movie.poster_path;
-        this.original_language = movie.original_language;
-        this.original_title = movie.original_title;
-        this.backdrop_path = movie.backdrop_path;
+        this.posterPath = movie.posterPath;
+        this.originalLanguage = movie.originalLanguage;
+        this.originalTitle = movie.originalTitle;
+        this.backdropPath = movie.backdropPath;
         this.overview = movie.overview;
-        this.release_date = movie.release_date;
+        this.releaseDate = movie.releaseDate;
         this.video = movie.video;
         this.adult = movie.adult;
-        this.vote_average = movie.vote_average;
+        this.voteAverage = movie.voteAverage;
         this.popularity = movie.popularity;
-        this.movie_poster = movie.movie_poster;
+        this.moviePoster = movie.moviePoster;
     }
 
     @Override
     public String toString() {
         return "Movie{" +
                 "id=" + id +
-                ", vote_count=" + vote_count +
+                ", voteCount=" + voteCount +
                 ", title='" + title + '\'' +
-                ", poster_path='" + poster_path + '\'' +
-                ", original_language='" + original_language + '\'' +
-                ", original_title='" + original_title + '\'' +
-                ", backdrop_path='" + backdrop_path + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
                 ", overview='" + overview + '\'' +
-                ", release_date='" + release_date + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
                 ", video=" + video +
                 ", adult=" + adult +
-                ", vote_average=" + vote_average +
+                ", voteAverage=" + voteAverage +
                 ", popularity=" + popularity +
                 '}';
     }
@@ -83,12 +88,12 @@ public class Movie implements Parcelable{
         this.id = id;
     }
 
-    public int getVote_count() {
-        return vote_count;
+    public int getVoteCount() {
+        return voteCount;
     }
 
-    public void setVote_count(int vote_count) {
-        this.vote_count = vote_count;
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 
     public String getTitle() {
@@ -99,36 +104,36 @@ public class Movie implements Parcelable{
         this.title = title;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
-    public String getOriginal_language() {
-        return original_language;
+    public String getOriginalLanguage() {
+        return originalLanguage;
     }
 
-    public void setOriginal_language(String original_language) {
-        this.original_language = original_language;
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
     }
 
-    public String getOriginal_title() {
-        return original_title;
+    public String getOriginalTitle() {
+        return originalTitle;
     }
 
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
     }
 
-    public String getBackdrop_path() {
-        return backdrop_path;
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
     }
 
     public String getOverview() {
@@ -139,12 +144,12 @@ public class Movie implements Parcelable{
         this.overview = overview;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public boolean isVideo() {
@@ -163,12 +168,12 @@ public class Movie implements Parcelable{
         this.adult = adult;
     }
 
-    public double getVote_average() {
-        return vote_average;
+    public double getVoteAverage() {
+        return voteAverage;
     }
 
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public double getPopularity() {
@@ -179,12 +184,12 @@ public class Movie implements Parcelable{
         this.popularity = popularity;
     }
 
-    public ImageView getMovie_poster() {
-        return movie_poster;
+    public ImageView getMoviePoster() {
+        return moviePoster;
     }
 
-    public void setMovie_poster(ImageView movie_poster) {
-        this.movie_poster = movie_poster;
+    public void setMoviePoster(ImageView moviePoster) {
+        this.moviePoster = moviePoster;
     }
 
     @Override
@@ -196,21 +201,21 @@ public class Movie implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeString(this.title);
-        dest.writeString(this.poster_path);
-        dest.writeString(this.backdrop_path);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.backdropPath);
         dest.writeString(this.overview);
-        dest.writeDouble(this.vote_average);
-        dest.writeString(this.release_date);
+        dest.writeDouble(this.voteAverage);
+        dest.writeString(this.releaseDate);
     }
 
     private Movie(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
-        this.poster_path = in.readString();
-        this.backdrop_path = in.readString();
+        this.posterPath = in.readString();
+        this.backdropPath = in.readString();
         this.overview = in.readString();
-        this.vote_average = in.readDouble();
-        this.release_date = in.readString();
+        this.voteAverage = in.readDouble();
+        this.releaseDate = in.readString();
     }
 
     public static final Parcelable.Creator<Movie> CREATOR

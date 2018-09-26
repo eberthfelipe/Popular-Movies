@@ -14,19 +14,19 @@ import java.util.ArrayList;
 public class MovieDatabaseJsonUtils {
     private static final String TAG = MovieDatabaseJsonUtils.class.getName();
 
-    public static final String JSON_VOTE_COUNT = "vote_count";
-    public static final String JSON_ID = "id";
-    public static final String JSON_VIDEO = "video";
-    public static final String JSON_VOTE_AVERAGE = "vote_average";
-    public static final String JSON_TITLE = "title";
-    public static final String JSON_POPULARITY = "popularity";
-    public static final String JSON_POSTER_PATH = "poster_path";
-    public static final String JSON_ORIGINAL_LANGUAGE = "original_language";
-    public static final String JSON_ORIGINAL_TITLE = "original_title";
-    public static final String JSON_BACKDROP_PATH = "backdrop_path";
-    public static final String JSON_ADULT = "adult";
-    public static final String JSON_OVERVIEW = "overview";
-    public static final String JSON_RELEASE_DATE = "release_date";
+    private static final String JSON_VOTE_COUNT = "vote_count";
+    private static final String JSON_ID = "id";
+    private static final String JSON_VIDEO = "video";
+    private static final String JSON_VOTE_AVERAGE = "vote_average";
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_POPULARITY = "popularity";
+    private static final String JSON_POSTER_PATH = "poster_path";
+    private static final String JSON_ORIGINAL_LANGUAGE = "original_language";
+    private static final String JSON_ORIGINAL_TITLE = "original_title";
+    private static final String JSON_BACKDROP_PATH = "backdrop_path";
+    private static final String JSON_ADULT = "adult";
+    private static final String JSON_OVERVIEW = "overview";
+    private static final String JSON_RELEASE_DATE = "release_date";
 
 
     /*
@@ -53,13 +53,35 @@ public class MovieDatabaseJsonUtils {
                 for (int i = 0; i < resultsJsonArray.length(); i++) {
                     objJsonAux = resultsJsonArray.getJSONObject(i);
                     Log.d(TAG, "getMovieDatabasePopularList: " + objJsonAux.toString());
-                    movie = new Movie(objJsonAux);
-                    movieArrayList.add(movie);
+                    movieArrayList.add(buildMovie(objJsonAux));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return movieArrayList;
+    }
+
+    private static Movie buildMovie(JSONObject objJsonAux){
+        Movie movie = new Movie();
+        try {
+            movie.setId(objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_ID));
+            movie.setVoteCount(objJsonAux.getInt(MovieDatabaseJsonUtils.JSON_VOTE_COUNT));
+            movie.setVideo(objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_VIDEO));
+            movie.setAdult(objJsonAux.getBoolean(MovieDatabaseJsonUtils.JSON_ADULT));
+            movie.setVoteAverage(objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_VOTE_AVERAGE));
+            movie.setPopularity(objJsonAux.getDouble(MovieDatabaseJsonUtils.JSON_POPULARITY));
+            movie.setPosterPath(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_POSTER_PATH));
+            movie.setTitle(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_TITLE));
+            movie.setOriginalTitle(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_TITLE));
+            movie.setOriginalLanguage(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_ORIGINAL_LANGUAGE));
+            movie.setBackdropPath(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_BACKDROP_PATH));
+            movie.setOverview(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_OVERVIEW));
+            movie.setReleaseDate(objJsonAux.getString(MovieDatabaseJsonUtils.JSON_RELEASE_DATE));
+            movie.setMoviePoster(null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movie;
     }
 }
