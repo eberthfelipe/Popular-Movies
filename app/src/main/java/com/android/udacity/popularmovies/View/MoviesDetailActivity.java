@@ -2,6 +2,7 @@ package com.android.udacity.popularmovies.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
@@ -18,8 +20,12 @@ import java.util.Objects;
 
 public class MoviesDetailActivity extends AppCompatActivity {
 
-    private TextView mTextViewMovieTitle, mTextViewMovieReleaseDate, mTextViewMovieAverage, mTextViewMovieDescription;
+    private TextView mTextViewMovieTitle;
+    private TextView mTextViewMovieReleaseDate;
+    private TextView mTextViewMovieAverage;
+    private TextView mTextViewMovieDescription;
     private ImageView mImageViewMoviePoster;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,23 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        //TODO: insert or delete from database
+        switch (item.getItemId()){
+            case R.id.menu_favorite:
+                if(isFavorite){
+                    item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_not_favorite));
+                    isFavorite = false;
+                } else {
+                    item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite));
+                    isFavorite = true;
+                }
+                break;
+            case R.id.menu_share:
+                Toast.makeText(this,"Sharing...", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     //endregion
