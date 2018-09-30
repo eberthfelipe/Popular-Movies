@@ -18,7 +18,10 @@
         android:textSize="@dimen/title_movie_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="@dimen/title_elevation"
+        tools:targetApi="lollipop"
+        />
 
     <ImageView
         android:id="@+id/iv_movie_poster_detail"

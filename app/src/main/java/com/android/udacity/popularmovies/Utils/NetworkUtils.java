@@ -92,7 +92,7 @@ public class NetworkUtils {
     }
 
     public static void buildPicassoRequest(@NonNull Context context, String imgPath, ImageView imageView){
-//        ImageView imageView = null;
+        //TODO: create class to save image from picasso to use on favorites view
         Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
                 + MOVIE_DATABASE_API_POSTER_SIZE
                 + imgPath)
