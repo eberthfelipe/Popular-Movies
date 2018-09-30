@@ -8,4 +8,8 @@
     <string name="permissions">Please, accept the permission request so that app works fine.</string>
     <string name="internet_off">No Internet Connection!</string>
     <string name="content_authority">com.android.udacity.popularmovies.provider</string>
+    <string name="menu_favorite">favorite</string>
+    <string name="menu_not_favorite">not favorite</string>
+    <string name="menu_share">share</string>
+
 </resources>
