@@ -115,16 +115,16 @@ public class MoviesProvider extends ContentProvider {
         switch(uriMatch){
             case CONTENT_ALL_DATA:
                 idDeleted = movieDB.delete(MoviesContractDB.MovieEntry.TABLE, selection, selectionArgs);
-                movieDB.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
-                        + MoviesContractDB.MovieEntry.CONTENT_ALL_DATA + "'");
+//                movieDB.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
+//                        + MoviesContractDB.MovieEntry.CONTENT_ALL_DATA + "'");
                 Log.d(TAG, "CONTENT_ALL_DATA\ndelete _ID: " + idDeleted);
                 break;
             case CONTENT_ITEM_DATA:
                 idDeleted = movieDB.delete(MoviesContractDB.MovieEntry.TABLE,
                         MoviesContractDB.MovieEntry._ID + " = ?",
                         new String[]{String.valueOf(ContentUris.parseId(uri))});
-                movieDB.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
-                        MoviesContractDB.MovieEntry.TABLE + "'");
+//                movieDB.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +
+//                        MoviesContractDB.MovieEntry.TABLE + "'");
                 Log.d(TAG, "CONTENT_ITEM_DATA\ndelete _ID: " + idDeleted);
                 break;
             default:

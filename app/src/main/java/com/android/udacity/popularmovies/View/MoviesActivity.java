@@ -28,7 +28,7 @@ import com.android.udacity.popularmovies.R;
 
 import java.util.ArrayList;
 
-public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
+public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.View, MovieContract.ListItemClickListener{
 
     public static final String MOVIE_OBJECT = "movie_object";
     private static final String USER_PREFERENCE = "user_preference";

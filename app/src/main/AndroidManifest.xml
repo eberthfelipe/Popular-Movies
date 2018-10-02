@@ -24,7 +24,7 @@
         <provider
             android:authorities="@string/content_authority"
             android:name=".Data.MoviesProvider"
-            android:exported="false"
+            android:exported="true"
             android:syncable="true"
             />
     </application>

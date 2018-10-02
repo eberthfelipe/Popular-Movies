@@ -1,5 +1,6 @@
 package com.android.udacity.popularmovies.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,13 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Presenter.DatabasePresenter;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.Objects;
 
-public class MoviesDetailActivity extends AppCompatActivity {
+public class MoviesDetailActivity extends AppCompatActivity implements MovieContract.View{
 
     private TextView mTextViewMovieTitle;
     private TextView mTextViewMovieReleaseDate;
@@ -26,11 +29,14 @@ public class MoviesDetailActivity extends AppCompatActivity {
     private TextView mTextViewMovieDescription;
     private ImageView mImageViewMoviePoster;
     private boolean isFavorite = false;
+    private DatabasePresenter mDatabasePresenter;
+    private Movie mMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_movies);
+        mDatabasePresenter = new DatabasePresenter(this);
         init();
         setData(getIntent());
     }
@@ -66,6 +72,7 @@ public class MoviesDetailActivity extends AppCompatActivity {
                 } else {
                     item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite));
                     isFavorite = true;
+                    mDatabasePresenter.insertNewFavorite(mMovie);
                 }
                 break;
             case R.id.menu_share:
@@ -91,15 +98,15 @@ public class MoviesDetailActivity extends AppCompatActivity {
 
     private void setData(Intent intent) {
         MoviesPresenter moviesPresenter = new MoviesPresenter();
-        Movie movie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
+        mMovie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
 
-        mTextViewMovieTitle.setText(movie.getTitle());
-        mTextViewMovieReleaseDate.setText(parseDate(movie.getReleaseDate()));
-        mTextViewMovieAverage.setText(String.valueOf(movie.getVoteAverage()));
-        mTextViewMovieDescription.setText(movie.getOverview());
+        mTextViewMovieTitle.setText(mMovie.getTitle());
+        mTextViewMovieReleaseDate.setText(parseDate(mMovie.getReleaseDate()));
+        mTextViewMovieAverage.setText(String.valueOf(mMovie.getVoteAverage()));
+        mTextViewMovieDescription.setText(mMovie.getOverview());
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
         //DONE: Fix load poster image bug
-        moviesPresenter.retrieveImageSrc(this, movie.getPosterPath(), mImageViewMoviePoster);
+        moviesPresenter.retrieveImageSrc(this, mMovie.getPosterPath(), mImageViewMoviePoster);
     }
 
     //Method to get only the year of movies
@@ -107,4 +114,15 @@ public class MoviesDetailActivity extends AppCompatActivity {
         return date.substring(0,4);
     }
 
+    //region View Interface
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showNoInternetConnection(boolean show) {
+        //TODO: implement NoInternetConnection for detail view
+    }
+    //endregion
 }

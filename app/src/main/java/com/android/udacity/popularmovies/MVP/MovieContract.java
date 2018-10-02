@@ -16,17 +16,24 @@ public interface MovieContract {
         //DONE: retrieve image from PICASSO
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
     }
+
     interface UserPreferenceModel {
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
     }
+
+    interface DataBaseModel {
+        void insertNewFavorite(Context context, Movie movie);
+    }
     //endregion
 
     //region Views
-    interface ActivityView{
+    interface ActivityView extends View{
         void showProgress();
         void hideProgress();
         void setMovieList(ArrayList<Movie> movieArrayList);
+    }
+    interface View{
         Context getContext();
         void showNoInternetConnection(boolean show);
     }
@@ -47,6 +54,10 @@ public interface MovieContract {
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
         void showNoInternetConnection(boolean show);
+    }
+
+    interface DatabasePresenter {
+        void insertNewFavorite(Movie movie);
     }
     //endregion
 
