@@ -44,9 +44,6 @@ public class MoviesDataBaseHelper extends SQLiteOpenHelper{
                 + newVersion);
         // Drop the table
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MoviesContractDB.MovieEntry.TABLE);
-        sqLiteDatabase.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
-                +MoviesContractDB.MovieEntry.TABLE + "'");
-
         // re-create database
         onCreate(sqLiteDatabase);
     }
