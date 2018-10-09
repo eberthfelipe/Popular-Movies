@@ -58,7 +58,11 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
+        MenuItem item = menu.getItem(0);
+        if(isFavorite){
+            item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite));
+        }
+        return true;
     }
 
     @Override
@@ -107,11 +111,17 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
         //DONE: Fix load poster image bug
         moviesPresenter.retrieveImageSrc(this, mMovie.getPosterPath(), mImageViewMoviePoster);
+        //Is this movie favorite?
+        isFavorite = isMovieFavorite(mMovie.getId());
     }
 
     //Method to get only the year of movies
     private String parseDate(String date){
         return date.substring(0,4);
+    }
+
+    private boolean isMovieFavorite(int movieId){
+        return mDatabasePresenter.isMovieAlreadyInserted(movieId);
     }
 
     //region View Interface

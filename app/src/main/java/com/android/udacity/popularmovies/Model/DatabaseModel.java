@@ -2,6 +2,7 @@ package com.android.udacity.popularmovies.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -15,6 +16,10 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
     @Override
     public void insertNewFavorite(Context context, Movie movie) {
         Log.d(TAG, "insertNewFavorite: " + movie.toString());
+
+        if(isMovieAlreadyInserted(context, movie.getId()))
+            return;
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(MoviesContractDB.MovieEntry._ID, movie.getId());
         contentValues.put(MoviesContractDB.MovieEntry.COLUMN_TITLE, movie.getTitle());
@@ -26,6 +31,27 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
                 MoviesContractDB.MovieEntry.CONTENT_URI,
                 contentValues
         );
-        Log.d(TAG, "URI inserted: " + uri.toString());
+        Log.d(TAG, "URI inserted: " + (uri != null ? uri.toString() : null));
     }
+
+    @Override
+    public boolean isMovieAlreadyInserted(Context context, int id) {
+        boolean isFavorite = false;
+        Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
+        Cursor cursor = context.getContentResolver().query(
+                uri,
+                new String[] {MoviesContractDB.MovieEntry._ID},
+                null,
+                null,
+                null
+        );
+        if(cursor != null && cursor.getCount()>0){
+            Log.w(TAG, "Already added in Movies Local DB!");
+            isFavorite = true;
+            cursor.close();
+        }
+        return isFavorite;
+    }
+
+
 }

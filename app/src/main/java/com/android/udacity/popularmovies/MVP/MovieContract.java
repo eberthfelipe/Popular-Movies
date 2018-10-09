@@ -24,6 +24,7 @@ public interface MovieContract {
 
     interface DataBaseModel {
         void insertNewFavorite(Context context, Movie movie);
+        boolean isMovieAlreadyInserted(Context context, int id);
     }
     //endregion
 
@@ -58,6 +59,7 @@ public interface MovieContract {
 
     interface DatabasePresenter {
         void insertNewFavorite(Movie movie);
+        boolean isMovieAlreadyInserted(int id);
     }
     //endregion
 
