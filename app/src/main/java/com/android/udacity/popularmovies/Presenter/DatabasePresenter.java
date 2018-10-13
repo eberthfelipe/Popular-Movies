@@ -23,4 +23,9 @@ public class DatabasePresenter implements MovieContract.DatabasePresenter {
     public boolean isMovieAlreadyInserted(int id) {
         return mDataBaseModel.isMovieAlreadyInserted(mDetailView.getContext(), id);
     }
+
+    @Override
+    public void deleteFavoriteMovie(int id) {
+        mDataBaseModel.deleteFavoriteMovie(mDetailView.getContext(), id);
+    }
 }

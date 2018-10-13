@@ -53,5 +53,14 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
         return isFavorite;
     }
 
+    @Override
+    public void deleteFavoriteMovie(Context context, int id) {
+        Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
+        int deleted = context.getContentResolver().delete(uri, MoviesContractDB.MovieEntry._ID, new String[]{String.valueOf(id)});
+        if(deleted > 0){
+            Log.d(TAG, "deleteFavoriteMovie: " + id);
+        }
+    }
+
 
 }
