@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Model.NetworkModel;
+import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Model.UserPreferenceModel;
 
 import java.util.ArrayList;
@@ -44,13 +45,10 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
 
     @Override
     public void retrieveImageSrc(String imgPath, ImageView imageView) {
-        mNetworkModel.retrieveImageSrc(getContext(), imgPath, imageView);
+        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
+        picassoModel.retrieveImageSrc(getContext(), imgPath, imageView);
     }
 
-    @Override
-    public void retrieveImageSrc(Context context, String imgPath, ImageView imageView) {
-        mNetworkModel.retrieveImageSrc(context, imgPath, imageView);
-    }
     //endregion
 
     //region View Interactions

@@ -13,7 +13,9 @@ public interface MovieContract {
     //region Models
     interface NetworkModel{
         void fetchDataFromMovieDatabase(int preference);
-        //DONE: retrieve image from PICASSO
+    }
+
+    interface PicassoModel{
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
     }
 
@@ -52,7 +54,6 @@ public interface MovieContract {
         Context getContext();
         void setMovieList(ArrayList<Movie> movieArrayList);
         void retrieveImageSrc(String imgPath, ImageView imageView);
-        void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
         void showNoInternetConnection(boolean show);
