@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Presenter.DatabasePresenter;
-import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.Objects;
@@ -102,16 +102,17 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     }
 
     private void setData(Intent intent) {
-        MoviesPresenter moviesPresenter = new MoviesPresenter();
         mMovie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
-
         mTextViewMovieTitle.setText(mMovie.getTitle());
         mTextViewMovieReleaseDate.setText(parseDate(mMovie.getReleaseDate()));
         mTextViewMovieAverage.setText(String.valueOf(mMovie.getVoteAverage()));
         mTextViewMovieDescription.setText(mMovie.getOverview());
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
+
         //DONE: Fix load poster image bug
-        moviesPresenter.retrieveImageSrc(this, mMovie.getPosterPath(), mImageViewMoviePoster);
+        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
+        picassoModel.retrieveImageSrc(this, mMovie.getPosterPath(), mImageViewMoviePoster);
+
         //Is this movie favorite?
         isFavorite = isMovieFavorite(mMovie.getId());
     }

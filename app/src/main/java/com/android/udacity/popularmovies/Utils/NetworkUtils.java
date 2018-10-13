@@ -25,9 +25,6 @@ public class NetworkUtils {
     private static final String MOVIE_DATABASE_API_URL = "https://api.themoviedb.org/3";
     private static final String MOVIE_DATABASE_API_GET_POPULAR = "movie/popular";
     private static final String MOVIE_DATABASE_API_GET_TOP_RATED = "movie/top_rated";
-    private static final String MOVIE_DATABASE_API_POSTER_URL = "http://image.tmdb.org/t/p/";
-    //Poster sizes:  "w92", "w154", "w185", "w342", "w500", "w780" ou "original".
-    private static final String MOVIE_DATABASE_API_POSTER_SIZE = "/w500";
     private static final String API_KEY = "api_key";
 
     /*
@@ -89,14 +86,6 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
-    }
-
-    public static void buildPicassoRequest(@NonNull Context context, String imgPath, ImageView imageView){
-        //TODO: create class to save image from picasso to use on favorites view
-        Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
-                + MOVIE_DATABASE_API_POSTER_SIZE
-                + imgPath)
-                .into(imageView);
     }
 
     public static boolean checkInternetConnection(Context context){
