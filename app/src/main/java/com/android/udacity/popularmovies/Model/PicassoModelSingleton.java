@@ -1,7 +1,6 @@
 package com.android.udacity.popularmovies.Model;
 
 import android.content.Context;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
