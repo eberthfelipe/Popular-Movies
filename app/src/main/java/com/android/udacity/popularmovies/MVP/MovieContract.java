@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Model.Movie;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public interface MovieContract {
 
     interface PicassoModel{
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
+        void retrieveImageSrc(Context context, String imgPath, Target target);
     }
 
     interface UserPreferenceModel {
@@ -28,6 +30,7 @@ public interface MovieContract {
         void insertNewFavorite(Context context, Movie movie);
         boolean isMovieAlreadyInserted(Context context, int id);
         void deleteFavoriteMovie(Context context, int id);
+        void updateMovieImagePath(Context context, int id, String value);
     }
     //endregion
 
@@ -63,6 +66,8 @@ public interface MovieContract {
         void insertNewFavorite(Movie movie);
         boolean isMovieAlreadyInserted(int id);
         void deleteFavoriteMovie(int id);
+        void updateMovieImagePath(int id, String value);
+        Context getContext();
     }
     //endregion
 

@@ -1,11 +1,13 @@
 package com.android.udacity.popularmovies.Model;
 
 import android.content.Context;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 public class PicassoModelSingleton implements MovieContract.PicassoModel {
 
@@ -29,14 +31,32 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
 
     @Override
     public void retrieveImageSrc(Context context, String imgPath, ImageView imageView) {
-        buildPicassoRequest(context, imgPath, imageView);
+        buildPicassoRequest(context, imgPath, imageView, 0);
     }
 
-    private void buildPicassoRequest(@NonNull Context context, String imgPath, ImageView imageView){
-        //TODO: create class to save image from picasso to use on favorites view
-        Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
-                + MOVIE_DATABASE_API_POSTER_SIZE
-                + imgPath)
-                .into(imageView);
+    @Override
+    public void retrieveImageSrc(Context context, String imgPath, Target target) {
+        buildPicassoRequest(context, imgPath, target, 1);
     }
+
+    private void buildPicassoRequest(@NonNull Context context, String imgPath, Object object, int type){
+        //TODO: create class to save image from picasso to use on favorites view
+        switch (type){
+            case 0:
+                ImageView imageView = (ImageView) object;
+                Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
+                        + MOVIE_DATABASE_API_POSTER_SIZE
+                        + imgPath)
+                        .into(imageView);
+                break;
+            case 1:
+                Target target = (Target) object;
+                Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
+                        + MOVIE_DATABASE_API_POSTER_SIZE
+                        + imgPath)
+                        .into(target);
+                break;
+        }
+    }
+
 }

@@ -62,5 +62,22 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
         }
     }
 
+    @Override
+    public void updateMovieImagePath(Context context, int id, String value) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MoviesContractDB.MovieEntry.COLUMN_IMAGE_PATH, value);
+
+        Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
+        int update = context.getContentResolver().update(
+                uri,
+                contentValues,
+                MoviesContractDB.MovieEntry._ID,
+                new String[]{String.valueOf(id)}
+        );
+        if(update > 0){
+            Log.d(TAG, "updateMovie: " + id);
+        }
+    }
+
 
 }
