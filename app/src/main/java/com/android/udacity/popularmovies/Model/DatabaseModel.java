@@ -4,10 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.udacity.popularmovies.Data.MoviesContractDB;
 import com.android.udacity.popularmovies.MVP.MovieContract;
+
+import java.io.File;
 
 public class DatabaseModel implements MovieContract.DataBaseModel {
 
@@ -41,8 +44,8 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
         Cursor cursor = context.getContentResolver().query(
                 uri,
                 new String[] {MoviesContractDB.MovieEntry._ID},
-                null,
-                null,
+                MoviesContractDB.MovieEntry._ID,
+                new String[]{String.valueOf(id)},
                 null
         );
         if(cursor != null && cursor.getCount()>0){
@@ -55,9 +58,13 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
 
     @Override
     public void deleteFavoriteMovie(Context context, int id) {
+        String imgPath = getImagePathFromDB(context, id);
         Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
         int deleted = context.getContentResolver().delete(uri, MoviesContractDB.MovieEntry._ID, new String[]{String.valueOf(id)});
         if(deleted > 0){
+            if(imgPath != null){
+                deleteImage(imgPath);
+            }
             Log.d(TAG, "deleteFavoriteMovie: " + id);
         }
     }
@@ -79,5 +86,28 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
         }
     }
 
+    private String getImagePathFromDB(Context context, int id){
+        String imagePath = "";
+        Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
+        Cursor cursor = context.getContentResolver().query(
+                uri,
+                new String[] {MoviesContractDB.MovieEntry.COLUMN_IMAGE_PATH},
+                MoviesContractDB.MovieEntry._ID,
+                new String[]{String.valueOf(id)},
+                null
+        );
+        if(cursor != null && cursor.getCount()>0){
+            cursor.moveToFirst();
+            imagePath = cursor.getString(0);
+            cursor.close();
+        }
+        return imagePath;
+    }
 
+    private void deleteImage(@NonNull String fileName){
+        File file = new File(fileName);
+        if(file.exists() && file.delete()){
+            Log.d(TAG, "deleteImage: " + fileName);
+        }
+    }
 }
