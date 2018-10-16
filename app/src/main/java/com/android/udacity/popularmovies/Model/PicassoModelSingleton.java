@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -39,13 +40,14 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
     }
 
     private void buildPicassoRequest(@NonNull Context context, String imgPath, Object object, int type){
-        //TODO: create class to save image from picasso to use on favorites view
+        //DONE: create class to save image from picasso to use on favorites view
         switch (type){
             case 0:
                 ImageView imageView = (ImageView) object;
                 Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
                         + MOVIE_DATABASE_API_POSTER_SIZE
                         + imgPath)
+                        .placeholder(R.drawable.ic_place_holder)
                         .into(imageView);
                 break;
             case 1:
@@ -53,6 +55,7 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
                 Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
                         + MOVIE_DATABASE_API_POSTER_SIZE
                         + imgPath)
+                        .placeholder(R.drawable.ic_place_holder)
                         .into(target);
                 break;
         }

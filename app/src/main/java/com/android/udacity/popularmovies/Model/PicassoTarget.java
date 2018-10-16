@@ -50,5 +50,3 @@ public class PicassoTarget implements Target {
 
     }
 }
-
-//TODO:delete movie from DB only on destroy method in MoviesDetailActivity

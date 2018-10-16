@@ -67,7 +67,6 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO: insert or delete from database with images. Handle it in another thread
         switch (item.getItemId()){
             case R.id.menu_favorite:
                 if(isFavorite){
