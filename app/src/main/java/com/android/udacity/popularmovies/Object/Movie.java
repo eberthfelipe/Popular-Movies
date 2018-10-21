@@ -1,14 +1,8 @@
-package com.android.udacity.popularmovies.Model;
+package com.android.udacity.popularmovies.Object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.widget.ImageView;
-
-import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Movie implements Parcelable{
     private int id;
@@ -26,6 +20,8 @@ public class Movie implements Parcelable{
     private double popularity;
     //Done: Add imageView object to represent the poster of movie
     private ImageView moviePoster;
+
+    private MovieDetail movieDetail;
 
     public Movie() {
         this.id = 0;
@@ -190,6 +186,14 @@ public class Movie implements Parcelable{
 
     public void setMoviePoster(ImageView moviePoster) {
         this.moviePoster = moviePoster;
+    }
+
+    public MovieDetail getMovieDetail() {
+        return movieDetail;
+    }
+
+    public void setMovieDetail(MovieDetail movieDetail) {
+        this.movieDetail = movieDetail;
     }
 
     @Override

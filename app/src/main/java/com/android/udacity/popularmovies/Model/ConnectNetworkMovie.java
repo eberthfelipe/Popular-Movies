@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 

@@ -5,7 +5,7 @@ import android.content.ContextWrapper;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.DatabaseModel;
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Model.PicassoTarget;
 

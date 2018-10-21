@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
@@ -70,7 +70,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mRecyclerView != null){
+        if(mRecyclerView != null && mRecyclerView.getAdapter() != null){
             GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
             outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
         }
@@ -200,11 +200,12 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     public void onListItemClick(int listItemIndex, Drawable drawable) {
         GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
-        Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
-
-        Intent intent = new Intent(this, MoviesDetailActivity.class);
-        intent.putExtra(MOVIE_OBJECT, movie);
-        startActivity(intent);
+        if (mGridAdapter != null) {
+            Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
+            Intent intent = new Intent(this, MoviesDetailActivity.class);
+            intent.putExtra(MOVIE_OBJECT, movie);
+            startActivity(intent);
+        }
     }
     //endregion
 

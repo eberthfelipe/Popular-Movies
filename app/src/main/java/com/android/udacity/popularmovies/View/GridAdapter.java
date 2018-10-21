@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.R;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;

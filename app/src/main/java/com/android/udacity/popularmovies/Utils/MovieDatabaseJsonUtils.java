@@ -3,7 +3,7 @@ package com.android.udacity.popularmovies.Utils;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;

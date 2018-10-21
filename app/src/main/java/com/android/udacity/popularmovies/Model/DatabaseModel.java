@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.android.udacity.popularmovies.Data.MoviesContractDB;
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Object.Movie;
 
 import java.io.File;
 
