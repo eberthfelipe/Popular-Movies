@@ -17,6 +17,7 @@ import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.Movie;
 import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Presenter.DatabasePresenter;
+import com.android.udacity.popularmovies.Presenter.MovieDetailPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     private ImageView mImageViewMoviePoster;
     private boolean isFavorite = false;
     private DatabasePresenter mDatabasePresenter;
+    private MovieDetailPresenter mMovieDetailPresenter;
     private Movie mMovie;
 
     @Override
@@ -37,7 +39,9 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_movies);
         mDatabasePresenter = new DatabasePresenter(this);
+        mMovieDetailPresenter = new MovieDetailPresenter(this);
         init();
+        //TODO: feature: implement onSavedInstance and onRestore
         setData(getIntent());
     }
 
@@ -114,6 +118,9 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
         //Is this movie favorite?
         isFavorite = isMovieFavorite(mMovie.getId());
+
+        //load trailers and reviews
+        mMovieDetailPresenter.fetchTrailerAndReviewFromMovieDB(mMovie.getId());
     }
 
     //Method to get only the year of movies

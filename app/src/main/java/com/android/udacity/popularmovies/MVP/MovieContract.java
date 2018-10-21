@@ -16,6 +16,10 @@ public interface MovieContract {
         void fetchDataFromMovieDatabase(int preference);
     }
 
+    interface NetworkMovieDetailModel{
+        void fetchTrailerAndReviewFromMovieDB(int movieId);
+    }
+
     interface PicassoModel{
         void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
         void retrieveImageSrc(Context context, String imgPath, Target target);
@@ -50,16 +54,23 @@ public interface MovieContract {
     //endregion
 
     //region Presenters
-    interface MoviesPresenter {
-        void fetchDataFromMovieDatabase(int preference);
+    interface Presenter {
+        Context getContext();
+        void showNoInternetConnection(boolean show);
         void showProgress();
         void hideProgress();
-        Context getContext();
+    }
+
+    interface MoviesPresenter extends Presenter{
+        void fetchDataFromMovieDatabase(int preference);
         void setMovieList(ArrayList<Movie> movieArrayList);
         void retrieveImageSrc(String imgPath, ImageView imageView);
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
-        void showNoInternetConnection(boolean show);
+    }
+
+    interface MovieDetailPresenter extends Presenter{
+        void fetchTrailerAndReviewFromMovieDB(int movieId);
     }
 
     interface DatabasePresenter {
