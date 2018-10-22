@@ -16,13 +16,14 @@ import android.widget.Toast;
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
+import com.android.udacity.popularmovies.Object.MovieDetail;
 import com.android.udacity.popularmovies.Presenter.DatabasePresenter;
 import com.android.udacity.popularmovies.Presenter.MovieDetailPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.Objects;
 
-public class MoviesDetailActivity extends AppCompatActivity implements MovieContract.View{
+public class MoviesDetailActivity extends AppCompatActivity implements MovieContract.DetailView{
 
     private TextView mTextViewMovieTitle;
     private TextView mTextViewMovieReleaseDate;
@@ -141,6 +142,11 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     @Override
     public void showNoInternetConnection(boolean show) {
         //TODO: implement NoInternetConnection for detail view
+    }
+
+    @Override
+    public void setMovieDetail(MovieDetail movieDetail) {
+        mMovie.setMovieDetail(movieDetail);
     }
     //endregion
 }

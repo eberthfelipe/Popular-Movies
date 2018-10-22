@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.Object.Movie;
+import com.android.udacity.popularmovies.Object.MovieDetail;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
@@ -44,10 +45,16 @@ public interface MovieContract {
         void hideProgress();
         void setMovieList(ArrayList<Movie> movieArrayList);
     }
+
+    interface DetailView extends View{
+        void setMovieDetail(MovieDetail movieDetail);
+    }
+
     interface View{
         Context getContext();
         void showNoInternetConnection(boolean show);
     }
+
     interface ListItemClickListener {
         void onListItemClick(int listItemIndex, Drawable drawable);
     }
@@ -71,6 +78,7 @@ public interface MovieContract {
 
     interface MovieDetailPresenter extends Presenter{
         void fetchTrailerAndReviewFromMovieDB(int movieId);
+        void setMovieDetail(MovieDetail movieDetail);
     }
 
     interface DatabasePresenter {

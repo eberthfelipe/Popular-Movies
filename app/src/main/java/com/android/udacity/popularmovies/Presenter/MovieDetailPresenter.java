@@ -4,20 +4,21 @@ import android.content.Context;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.NetworkDetailModel;
+import com.android.udacity.popularmovies.Object.MovieDetail;
 
 public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter {
 
-    private MovieContract.View mView;
+    private MovieContract.DetailView mDetailView;
     private MovieContract.NetworkMovieDetailModel mNetworkMovieDetailModel;
 
-    public MovieDetailPresenter(MovieContract.View mView) {
-        this.mView = mView;
+    public MovieDetailPresenter(MovieContract.DetailView mView) {
+        this.mDetailView = mView;
         mNetworkMovieDetailModel = new NetworkDetailModel(this);
     }
 
     @Override
     public Context getContext() {
-        return mView != null ? mView.getContext() : null;
+        return mDetailView != null ? mDetailView.getContext() : null;
     }
 
     @Override
@@ -38,5 +39,10 @@ public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter 
     @Override
     public void fetchTrailerAndReviewFromMovieDB(int movieId) {
         mNetworkMovieDetailModel.fetchTrailerAndReviewFromMovieDB(movieId);
+    }
+
+    @Override
+    public void setMovieDetail(MovieDetail movieDetail) {
+        mDetailView.setMovieDetail(movieDetail);
     }
 }
