@@ -11,5 +11,7 @@
     <string name="menu_favorite">favorite</string>
     <string name="menu_not_favorite">not favorite</string>
     <string name="menu_share">share</string>
+    <string name="videos">Videos</string>
+    <string name="reviews">Reviews</string>
 
 </resources>
