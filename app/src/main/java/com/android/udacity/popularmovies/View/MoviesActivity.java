@@ -198,7 +198,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     @Override
-    public void onListItemClick(int listItemIndex, Drawable drawable) {
+    public void onListItemClick(int listItemIndex) {
         GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
         if (mGridAdapter != null) {
             Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));

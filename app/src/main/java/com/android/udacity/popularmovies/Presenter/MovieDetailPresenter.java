@@ -28,12 +28,12 @@ public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter 
 
     @Override
     public void showProgress() {
-
+        mDetailView.showProgress();
     }
 
     @Override
     public void hideProgress() {
-
+        mDetailView.hideProgress();
     }
 
     @Override

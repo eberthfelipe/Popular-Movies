@@ -41,8 +41,6 @@ public interface MovieContract {
 
     //region Views
     interface ActivityView extends View{
-        void showProgress();
-        void hideProgress();
         void setMovieList(ArrayList<Movie> movieArrayList);
     }
 
@@ -52,11 +50,13 @@ public interface MovieContract {
 
     interface View{
         Context getContext();
+        void showProgress();
+        void hideProgress();
         void showNoInternetConnection(boolean show);
     }
 
     interface ListItemClickListener {
-        void onListItemClick(int listItemIndex, Drawable drawable);
+        void onListItemClick(int listItemIndex);
     }
     //endregion
 
