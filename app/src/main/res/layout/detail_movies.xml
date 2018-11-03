@@ -4,46 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteY="81dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_movie_title_detail"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/menu_background"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:textAllCaps="false"
-        android:textColor="@color/text_color_primary"
-        android:textSize="@dimen/title_movie_detail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="@dimen/title_elevation"
-        tools:targetApi="lollipop"
-        />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:focusableInTouchMode="true"
+        >
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_detail_movie"
             >
 
             <ImageView
                 android:id="@+id/iv_movie_poster_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:contentDescription="@string/content_description_movie_poster"
                 android:src="@mipmap/ic_launcher"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_movie_title_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:background="@color/menu_background"
+                android:elevation="@dimen/title_elevation"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/title_movie_detail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="lollipop" />
 
             <TextView
                 android:id="@+id/tv_release_date"
@@ -55,7 +54,7 @@
                 android:textSize="@dimen/title_movie"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tv_movie_title_detail" />
 
             <TextView
                 android:id="@+id/tv_average"
@@ -71,44 +70,38 @@
             <TextView
                 android:id="@+id/tv_movie_description"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:scrollbars="vertical"
+                android:layout_marginEnd="8dp"
                 android:background="@color/divider"
+                android:scrollbars="vertical"
                 android:textAlignment="viewStart"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/average_movie_evaluation"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_movie_poster_detail"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_movie_poster_detail"
-                app:layout_constraintTop_toBottomOf="@+id/tv_average"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster_detail" />
 
             <include
                 layout="@layout/detail_video_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster_detail"
                 android:visibility="visible"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_movie_description" />
 
             <include
+                android:id="@+id/include5"
                 layout="@layout/no_internet_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_movie_poster_detail"
                 android:visibility="gone"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tv_movie_description" />
 
         </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-
-    <!-- TODO: change view to have videos and trailer-->
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
