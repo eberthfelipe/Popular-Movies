@@ -22,8 +22,7 @@ public interface MovieContract {
     }
 
     interface PicassoModel{
-        void retrieveImageSrc(Context context, String imgPath, ImageView imageView);
-        void retrieveImageSrc(Context context, String imgPath, Target target);
+        void retrieveImageSrc(Context context, String imgPath, Object object, int type);
     }
 
     interface UserPreferenceModel {
@@ -66,12 +65,12 @@ public interface MovieContract {
         void showNoInternetConnection(boolean show);
         void showProgress();
         void hideProgress();
+        void retrieveImageSrc(String imgPath, Object object, int type);
     }
 
     interface MoviesPresenter extends Presenter{
         void fetchDataFromMovieDatabase(int preference);
         void setMovieList(ArrayList<Movie> movieArrayList);
-        void retrieveImageSrc(String imgPath, ImageView imageView);
         int getPreferences(Context context);
         void setPreferences(Context context, int value);
     }

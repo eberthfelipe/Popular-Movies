@@ -136,8 +136,7 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
 
         //DONE: Fix load poster image bug
-        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
-        picassoModel.retrieveImageSrc(this, mMovie.getPosterPath(), mImageViewMoviePoster);
+        mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_POSTER);
 
         //Is this movie favorite?
         isFavorite = isMovieFavorite(mMovie.getId());
@@ -191,10 +190,10 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         if(movieDetail != null){
             mMovie.setMovieDetail(movieDetail);
             if(movieDetail.getMovieVideos() != null && movieDetail.getMovieReviews() != null){
-                gridAdapterVideo = new GridAdapterVideo(movieDetail.getMovieVideos(), this);
+                gridAdapterVideo = new GridAdapterVideo(movieDetail.getMovieVideos(), mMovieDetailPresenter, this);
                 gridAdapterReview = new GridAdapterReview(movieDetail.getMovieReviews(), this);
             } else {
-                gridAdapterVideo = new GridAdapterVideo(new MovieVideo[]{}, this);
+                gridAdapterVideo = new GridAdapterVideo(new MovieVideo[]{}, mMovieDetailPresenter,this);
                 gridAdapterReview = new GridAdapterReview(new MovieReview[]{}, this);
                 Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
             }

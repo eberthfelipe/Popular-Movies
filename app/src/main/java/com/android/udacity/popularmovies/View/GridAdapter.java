@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.R;
 
@@ -43,7 +44,7 @@ class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
     public void onBindViewHolder(@NonNull MovieGridHolder holder, int position) {
         if(mMovieArrayList != null) {
             holder.setMovieTitle(mMovieArrayList.get(position).getTitle());
-            mMoviesPresenter.retrieveImageSrc(mMovieArrayList.get(position).getPosterPath(), holder.getMovieImageView());
+            mMoviesPresenter.retrieveImageSrc(mMovieArrayList.get(position).getPosterPath(), holder.getMovieImageView(), PicassoModelSingleton.TYPE_POSTER);
             //DONE 2: implement picasso fetch with MVP
         }
     }

@@ -58,6 +58,6 @@ public class DatabasePresenter implements MovieContract.DatabasePresenter {
     private synchronized void savePicassoImage(String imgURL, String imgName){
         PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
         PicassoTarget picassoTarget = new PicassoTarget(imgName);
-        picassoModel.retrieveImageSrc(getContext(), imgURL, picassoTarget);
+        picassoModel.retrieveImageSrc(getContext(), imgURL, picassoTarget, PicassoModelSingleton.TYPE_FILE);
     }
 }
