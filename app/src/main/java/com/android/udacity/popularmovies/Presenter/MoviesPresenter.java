@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Model.DatabaseModel;
 import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Model.NetworkModel;
 import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
@@ -23,8 +24,19 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     //region Model Interactions
     @Override
     public void fetchDataFromMovieDatabase(int preference) {
-        // get User preference for movies: popular or top rated
-        mNetworkModel.fetchDataFromMovieDatabase(preference);
+        // get User preference for movies: popular, top rated or local favorites
+        switch (preference){
+            case 0:
+            case 1:
+                mNetworkModel.fetchDataFromMovieDatabase(preference);
+                break;
+            case 2:
+                //local database has favorite movies
+                DatabaseModel databaseModel = new DatabaseModel();
+                mActivityView.setMovieList(databaseModel.loadFavoriteMovies(getContext()));
+                mActivityView.hideProgress();
+                break;
+        }
     }
 
     @Override

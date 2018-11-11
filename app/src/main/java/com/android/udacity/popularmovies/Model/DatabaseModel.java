@@ -12,10 +12,11 @@ import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Object.Movie;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class DatabaseModel implements MovieContract.DataBaseModel {
+public class DatabaseModel implements MovieContract.DatabaseModel {
 
-    private final String TAG = MovieContract.DataBaseModel.class.getName();
+    private final String TAG = MovieContract.DatabaseModel.class.getName();
 
     @Override
     public void insertNewFavorite(Context context, Movie movie) {
@@ -87,6 +88,38 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
         }
     }
 
+    @Override
+    public ArrayList<Movie> loadFavoriteMovies(Context context) {
+        Uri uri = MoviesContractDB.MovieEntry.CONTENT_URI;
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        ArrayList<Movie> movieArrayList = new ArrayList<>();
+        if(cursor != null && cursor.getCount()>0){
+            cursor.moveToFirst();
+            Movie movieAux;
+            do {
+                movieAux = new Movie();
+                movieAux.setId(cursor.getInt(cursor.getColumnIndex(MoviesContractDB.MovieEntry._ID)));
+                movieAux.setTitle(cursor.getString(cursor.getColumnIndex(MoviesContractDB.MovieEntry.COLUMN_TITLE)));
+                movieAux.setOverview(cursor.getString(cursor.getColumnIndex(MoviesContractDB.MovieEntry.COLUMN_OVERVIEW)));
+                movieAux.setVoteAverage(cursor.getDouble(cursor.getColumnIndex(MoviesContractDB.MovieEntry.COLUMN_VOTE_AVERAGE)));
+                movieAux.setReleaseDate(cursor.getString(cursor.getColumnIndex(MoviesContractDB.MovieEntry.COLUMN_RELEASE_DATE)));
+                movieAux.setPosterPath(cursor.getString(cursor.getColumnIndex(MoviesContractDB.MovieEntry.COLUMN_IMAGE_PATH)));
+
+                Log.d(TAG, "loadFavoriteMovies: " + movieAux.toString());
+                movieArrayList.add(movieAux);
+            } while(cursor.moveToNext());
+            cursor.close();
+        }
+        return movieArrayList;
+    }
+
+    private void deleteImage(@NonNull String fileName){
+        File file = new File(fileName);
+        if(file.exists() && file.delete()){
+            Log.d(TAG, "deleteImage: " + fileName);
+        }
+    }
+
     private String getImagePathFromDB(Context context, int id){
         String imagePath = "";
         Uri uri = MoviesContractDB.MovieEntry.buildMoviesUri(id);
@@ -103,12 +136,5 @@ public class DatabaseModel implements MovieContract.DataBaseModel {
             cursor.close();
         }
         return imagePath;
-    }
-
-    private void deleteImage(@NonNull String fileName){
-        File file = new File(fileName);
-        if(file.exists() && file.delete()){
-            Log.d(TAG, "deleteImage: " + fileName);
-        }
     }
 }

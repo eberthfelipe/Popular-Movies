@@ -23,6 +23,10 @@
                     android:id="@+id/menu_top_rated"
                     android:title="@string/top_rated"
                     android:icon="@drawable/ic_menu_thumb_up"/>
+                <item
+                    android:id="@+id/menu_favorite_view"
+                    android:title="@string/top_rated"
+                    android:icon="@drawable/ic_favorite"/>
 
             </group>
         </menu>

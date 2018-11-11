@@ -18,18 +18,21 @@ class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
     private ArrayList<Movie> mMovieArrayList;
     final private MovieContract.ListItemClickListener mListItemOnClickListener;
     private MovieContract.MoviesPresenter mMoviesPresenter;
+    private int mUserPreference;
     //DONE: Check if it is better to add a presenter object here
 
-    GridAdapter(ArrayList<Movie> movieArrayList, MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter){
+    GridAdapter(ArrayList<Movie> movieArrayList, MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter, int userPreference){
         this.mMovieArrayList = new ArrayList<>(movieArrayList);
         this.mListItemOnClickListener = mListItemOnClickListener;
         this.mMoviesPresenter = moviesPresenter;
+        this.mUserPreference = userPreference;
     }
 
-    GridAdapter(MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter){
+    GridAdapter(MovieContract.ListItemClickListener mListItemOnClickListener, MovieContract.MoviesPresenter moviesPresenter, int userPreference){
         this.mMovieArrayList = new ArrayList<>();
         this.mListItemOnClickListener = mListItemOnClickListener;
         this.mMoviesPresenter = moviesPresenter;
+        this.mUserPreference = userPreference;
     }
 
     @NonNull
@@ -42,9 +45,11 @@ class GridAdapter extends RecyclerView.Adapter<MovieGridHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MovieGridHolder holder, int position) {
+        //Check if mUserPreference is favorite, so get images from local db
+        int type = mUserPreference == 2 ? PicassoModelSingleton.TYPE_FILE : PicassoModelSingleton.TYPE_POSTER;
         if(mMovieArrayList != null) {
             holder.setMovieTitle(mMovieArrayList.get(position).getTitle());
-            mMoviesPresenter.retrieveImageSrc(mMovieArrayList.get(position).getPosterPath(), holder.getMovieImageView(), PicassoModelSingleton.TYPE_POSTER);
+            mMoviesPresenter.retrieveImageSrc(mMovieArrayList.get(position).getPosterPath(), holder.getMovieImageView(), type);
             //DONE 2: implement picasso fetch with MVP
         }
     }

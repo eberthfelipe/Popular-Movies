@@ -136,8 +136,19 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         mTextViewMovieDescription.setText(mMovie.getOverview());
         mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
 
-        //DONE: Fix load poster image bug
-        mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_POSTER);
+        //get user preference
+        int userPreference = intent.getIntExtra(MoviesActivity.USER_PREFERENCE, 0);
+
+        /**
+         *  userpreference changes how picasso will load images
+         *  values 0 and 1 load images from web
+         *  value 2 loads images from local database
+         */
+        if(userPreference == 2){
+            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_FILE);
+        } else {
+            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_POSTER);
+        }
 
         //Is this movie favorite?
         isFavorite = isMovieFavorite(mMovie.getId());

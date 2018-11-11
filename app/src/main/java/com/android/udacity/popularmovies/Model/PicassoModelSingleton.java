@@ -9,6 +9,8 @@ import com.android.udacity.popularmovies.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.File;
+
 public class PicassoModelSingleton implements MovieContract.PicassoModel {
 
     private static PicassoModelSingleton sPicassoModelInstance;
@@ -20,8 +22,9 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
     private static final String YOUTUBE_POSTER_URL = "http://img.youtube.com/vi/?/0.jpg";
     // type of images which Picasso can handle
     public static final int TYPE_POSTER = 0;
-    public static final int TYPE_FILE = 1;
+    public static final int TYPE_TARGET = 1;
     public static final int TYPE_VIDEO = 2;
+    public static final int TYPE_FILE = 3;
 
     private PicassoModelSingleton(){
         if(sPicassoModelInstance != null){
@@ -48,15 +51,17 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
         switch (type){
             case TYPE_POSTER:
                 imageView = (ImageView) object;
-                Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
+                Picasso.with(context)
+                        .load(MOVIE_DATABASE_API_POSTER_URL
                         + MOVIE_DATABASE_API_POSTER_SIZE
                         + imgPath)
                         .placeholder(R.drawable.ic_place_holder)
                         .into(imageView);
                 break;
-            case TYPE_FILE:
+            case TYPE_TARGET:
                 target = (Target) object;
-                Picasso.with(context).load(MOVIE_DATABASE_API_POSTER_URL
+                Picasso.with(context)
+                        .load(MOVIE_DATABASE_API_POSTER_URL
                         + MOVIE_DATABASE_API_POSTER_SIZE
                         + imgPath)
                         .placeholder(R.drawable.ic_place_holder)
@@ -64,10 +69,25 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
                 break;
             case TYPE_VIDEO:
                 imageView = (ImageView) object;
-                Picasso.with(context).load(YOUTUBE_POSTER_URL
+                Picasso.with(context)
+                        .load(YOUTUBE_POSTER_URL
                         .replace("?", imgPath))
                         .placeholder(R.drawable.ic_place_holder)
                         .into(imageView);
+                break;
+            case TYPE_FILE:
+                imageView = (ImageView) object;
+                File file =  (imgPath != null) ? new File(imgPath) : null;
+                if (file != null){
+                    Picasso.with(context)
+                            .load(file)
+                            .placeholder(R.drawable.ic_place_holder)
+                            .into(imageView);
+                } else {
+                    Picasso.with(context)
+                            .load(R.drawable.ic_place_holder)
+                            .into(imageView);
+                }
                 break;
         }
     }

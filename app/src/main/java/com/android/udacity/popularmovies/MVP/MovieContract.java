@@ -30,11 +30,12 @@ public interface MovieContract {
         void setPreferences(Context context, int value);
     }
 
-    interface DataBaseModel {
+    interface DatabaseModel {
         void insertNewFavorite(Context context, Movie movie);
         boolean isMovieAlreadyInserted(Context context, int id);
         void deleteFavoriteMovie(Context context, int id);
         void updateMovieImagePath(Context context, int id, String value);
+        ArrayList<Movie> loadFavoriteMovies(Context context);
     }
     //endregion
 

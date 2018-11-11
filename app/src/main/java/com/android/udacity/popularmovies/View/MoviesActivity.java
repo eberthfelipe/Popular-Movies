@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.View, MovieContract.ListItemClickListener{
 
     public static final String MOVIE_OBJECT = "movie_object";
-    private static final String USER_PREFERENCE = "user_preference";
+    public static final String USER_PREFERENCE = "user_preference";
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
@@ -100,6 +100,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             menuItem = menu.findItem(R.id.menu_top_rated);
             menuItem.setChecked(true);
             break;
+            case 2:
+            menuItem = menu.findItem(R.id.menu_favorite_view);
+            menuItem.setChecked(true);
+            break;
         }
         return true;
     }
@@ -116,6 +120,11 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             case R.id.menu_top_rated:
                 if(mUserPreference != 1){
                     setItemMenuClicked(1);
+                }
+                break;
+            case R.id.menu_favorite_view:
+                if(mUserPreference != 2){
+                    setItemMenuClicked(2);
                 }
                 break;
             default:
@@ -183,10 +192,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     public void setMovieList(ArrayList<Movie> movieArrayList) {
         GridAdapter mGridAdapter;
         if(movieArrayList != null) {
-            mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
+            mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter, mUserPreference);
         } else {
             //DONE: implement try again for null array
-            mGridAdapter = new GridAdapter(this, mMoviesPresenter);
+            mGridAdapter = new GridAdapter(this, mMoviesPresenter, mUserPreference);
             Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
         }
         mRecyclerView.setAdapter(mGridAdapter);
@@ -204,6 +213,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
             Intent intent = new Intent(this, MoviesDetailActivity.class);
             intent.putExtra(MOVIE_OBJECT, movie);
+            intent.putExtra(USER_PREFERENCE, mUserPreference);
             startActivity(intent);
         }
     }
@@ -214,7 +224,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
-        mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter));
+        mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter, mUserPreference));
         mLinearLayout = findViewById(R.id.ll_unavailable_internet);
 
         mOnRefreshListener = getSwipeRefreshListener();
