@@ -47,4 +47,8 @@ public class GridAdapterVideo extends RecyclerView.Adapter<VideoListHolder> {
         }
         return movieVideos.length;
     }
+
+    public String getMovieKey(int idMovie){
+        return movieVideos[idMovie].getKey();
+    }
 }

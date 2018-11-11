@@ -30,6 +30,7 @@ public class VideoListHolder extends RecyclerView.ViewHolder implements View.OnC
     public void onClick(View view) {
         int clickPosition = getAdapterPosition();
         Log.d("VideoListHolder", "teste onClick: " + clickPosition);
+        mListItemOnClickListener.onListItemClick(clickPosition);
     }
 
     public void setVideoName(String videoName){

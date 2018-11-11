@@ -2,6 +2,7 @@ package com.android.udacity.popularmovies.View;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -204,7 +205,12 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     @Override
     public void onListItemClick(int listItemIndex) {
-        Toast.makeText(this, "DO NOTHING!!!!!!", Toast.LENGTH_LONG).show();
+        GridAdapterVideo gridAdapterVideo = (GridAdapterVideo) mRecyclerViewVideo.getAdapter();
+        if(gridAdapterVideo != null){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.youtube.com/watch?v="+gridAdapterVideo.getMovieKey(listItemIndex)));
+            startActivity(intent);
+        }
+
     }
     //endregion
 }
