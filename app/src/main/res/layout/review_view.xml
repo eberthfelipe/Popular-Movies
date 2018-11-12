@@ -26,17 +26,4 @@
         android:textSize="@dimen/average_movie_evaluation"
         />
 
-    <!--<view-->
-    <!--android:id="view_divider"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="2dp"-->
-    <!--android:background="@color/colorPrimary"-->
-    <!--android:layout_below="@id/tv_review_content"-->
-    <!--android:layout_marginTop="2dp"-->
-    <!--android:layout_marginBottom="2dp"-->
-    <!--/>-->
-
-    <!--TODO: create divisor for reviews-->
-    <!--TODO: create feedback for user when have no review and/or video-->
-
 </RelativeLayout>

@@ -86,6 +86,7 @@ public interface MovieContract {
         boolean isMovieAlreadyInserted(int id);
         void deleteFavoriteMovie(int id);
         void updateMovieImagePath(int id, String value);
+        ArrayList<Movie> loadFavoriteMovies();
         Context getContext();
     }
     //endregion

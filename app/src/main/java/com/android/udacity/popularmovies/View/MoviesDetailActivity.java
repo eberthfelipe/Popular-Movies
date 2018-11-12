@@ -1,5 +1,6 @@
 package com.android.udacity.popularmovies.View;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -58,6 +59,15 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("isFavorite", isFavorite);
+        intent.putExtra("movieID",mMovie.getId());
+        setResult(Activity.CONTEXT_INCLUDE_CODE, intent);
+        finish();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
@@ -97,6 +107,7 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
                 break;
             case R.id.menu_share:
                 Toast.makeText(this,"Sharing...", Toast.LENGTH_SHORT).show();
+                //TODO: Implement sharing functionality to allow the user to share the first trailer’s YouTube URL from the movie details screen.
             default:
                 return super.onOptionsItemSelected(item);
         }

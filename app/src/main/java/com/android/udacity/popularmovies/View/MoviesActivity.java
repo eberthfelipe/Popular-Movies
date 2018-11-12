@@ -1,6 +1,7 @@
 package com.android.udacity.popularmovies.View;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +23,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.udacity.popularmovies.Data.MoviesDataBaseHelper;
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Model.DatabaseModel;
 import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
@@ -45,14 +49,12 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMoviesPresenter = new MoviesPresenter();
-        mMoviesPresenter.setActivityView(this);
+        mMoviesPresenter = new MoviesPresenter(this);
         init();
         if(savedInstanceState == null){
             getUserPreferences();
             updateData();
         }
-
     }
 
     @Override
@@ -76,6 +78,19 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         }
         outState.putInt(USER_PREFERENCE, mUserPreference);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == resultCode && mUserPreference == 2){
+            boolean isFavorite = data != null ? data.getBooleanExtra("isFavorite", false) : false;
+            if(!isFavorite){
+                int idMovie = data.getIntExtra("movieID", -1);
+                if(!mMoviesPresenter.isMovieSavedInDB(idMovie)){
+                    notifyChanges(idMovie);
+                }
+            }
+        }
     }
 
     //DONE: Add menu for sort preference
@@ -214,10 +229,12 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             Intent intent = new Intent(this, MoviesDetailActivity.class);
             intent.putExtra(MOVIE_OBJECT, movie);
             intent.putExtra(USER_PREFERENCE, mUserPreference);
-            startActivity(intent);
+            startActivityForResult(intent, Activity.CONTEXT_INCLUDE_CODE);
         }
     }
     //endregion
+
+    //region View methods
 
     // Method to initialize view and visual components
     private void init(){
@@ -259,6 +276,15 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private void getUserPreferences(){
         mUserPreference = mMoviesPresenter.getPreferences(this);
     }
+
+    private void notifyChanges(int idMovie) {
+        GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
+        Movie auxMovie = new Movie();
+        auxMovie.setId(idMovie);
+        mGridAdapter.getMovieArrayList().remove(auxMovie);
+        mGridAdapter.notifyDataSetChanged();
+    }
+    //endregion
 
     //region SwipeRefresh Methods
     private SwipeRefreshLayout.OnRefreshListener getSwipeRefreshListener(){

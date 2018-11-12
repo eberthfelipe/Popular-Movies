@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.util.Objects;
+
 public class Movie implements Parcelable{
     private int id;
     private int voteCount;
@@ -20,7 +22,7 @@ public class Movie implements Parcelable{
     private double popularity;
     //Done: Add imageView object to represent the poster of movie
     private ImageView moviePoster;
-
+    //class contains movie's videos and reviews
     private MovieDetail movieDetail;
 
     public Movie() {
@@ -74,6 +76,19 @@ public class Movie implements Parcelable{
                 ", voteAverage=" + voteAverage +
                 ", popularity=" + popularity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Movie movie = (Movie) object;
+        return id == movie.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public int getId() {

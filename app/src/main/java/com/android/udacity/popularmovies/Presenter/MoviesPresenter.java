@@ -16,9 +16,12 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     private MovieContract.NetworkModel mNetworkModel;
     private MovieContract.UserPreferenceModel mUserPreferenceModel;
     private MovieContract.ActivityView mActivityView;
+    private MovieContract.DatabasePresenter mDatabasePresenter;
 
-    public MoviesPresenter(){
+    public MoviesPresenter(MovieContract.ActivityView activityView){
         mNetworkModel = new NetworkModel(this);
+        this.mActivityView = activityView;
+        mDatabasePresenter = new DatabasePresenter(activityView);
     }
 
     //region Model Interactions
@@ -32,8 +35,7 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
                 break;
             case 2:
                 //local database has favorite movies
-                DatabaseModel databaseModel = new DatabaseModel();
-                mActivityView.setMovieList(databaseModel.loadFavoriteMovies(getContext()));
+                mActivityView.setMovieList(mDatabasePresenter.loadFavoriteMovies());
                 mActivityView.hideProgress();
                 break;
         }
@@ -64,9 +66,6 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     //endregion
 
     //region View Interactions
-    public void setActivityView(MovieContract.ActivityView mActivityView){
-        this.mActivityView = mActivityView;
-    }
 
     @Override
     public void showProgress() {
@@ -94,6 +93,12 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     @Override
     public void showNoInternetConnection(boolean show) {
         mActivityView.showNoInternetConnection(show);
+    }
+    //endregion
+
+    //region Database Interactions
+    public boolean isMovieSavedInDB(int movieID){
+        return mDatabasePresenter.isMovieAlreadyInserted(movieID);
     }
     //endregion
 }
