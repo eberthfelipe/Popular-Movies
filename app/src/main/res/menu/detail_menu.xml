@@ -6,9 +6,11 @@
         app:showAsAction="ifRoom"
         android:orderInCategory="0"
         android:icon="@drawable/ic_not_favorite"/>
-    <item android:title="@string/menu_share"
+    <item
         android:id="@+id/menu_share"
-        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share"
         android:orderInCategory="1"
-        android:icon="@drawable/ic_share"/>
+        android:title="@string/menu_share"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

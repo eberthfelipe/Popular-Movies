@@ -46,6 +46,7 @@ public interface MovieContract {
 
     interface DetailView extends View{
         void setMovieDetail(MovieDetail movieDetail);
+        void enableShareMenuOption();
     }
 
     interface View{
@@ -79,6 +80,7 @@ public interface MovieContract {
     interface MovieDetailPresenter extends Presenter{
         void fetchTrailerAndReviewFromMovieDB(int movieId);
         void setMovieDetail(MovieDetail movieDetail);
+        void enableShareMenuOption();
     }
 
     interface DatabasePresenter {

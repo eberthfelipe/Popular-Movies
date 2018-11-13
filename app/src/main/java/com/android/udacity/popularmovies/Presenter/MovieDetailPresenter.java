@@ -1,7 +1,6 @@
 package com.android.udacity.popularmovies.Presenter;
 
 import android.content.Context;
-import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
 import com.android.udacity.popularmovies.Model.NetworkDetailModel;
@@ -52,5 +51,10 @@ public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter 
     @Override
     public void setMovieDetail(MovieDetail movieDetail) {
         mDetailView.setMovieDetail(movieDetail);
+    }
+
+    @Override
+    public void enableShareMenuOption() {
+        mDetailView.enableShareMenuOption();
     }
 }

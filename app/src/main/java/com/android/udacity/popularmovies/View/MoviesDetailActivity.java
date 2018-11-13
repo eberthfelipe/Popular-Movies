@@ -42,6 +42,7 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     private RecyclerView mRecyclerViewReview;
     private ProgressBar mProgressBarVideos;
     private ProgressBar mProgressBarReviews;
+    private MenuItem mShareMenu;
     private boolean isFavorite = false;
     private DatabasePresenter mDatabasePresenter;
     private MovieDetailPresenter mMovieDetailPresenter;
@@ -88,6 +89,10 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         if(isFavorite){
             item.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite));
         }
+        mShareMenu = menu.getItem(1);
+        if(validateGridAdapterVideo()){
+            mShareMenu.setVisible(true);
+        }
         return true;
     }
 
@@ -106,8 +111,13 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
                 }
                 break;
             case R.id.menu_share:
-                Toast.makeText(this,"Sharing...", Toast.LENGTH_SHORT).show();
-                //TODO: Implement sharing functionality to allow the user to share the first trailer’s YouTube URL from the movie details screen.
+                if(validateGridAdapterVideo()){
+                    String movieKey = getGridAdapterVideo().getMovieKey(0);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, mMovie.getTitle() + "\nhttp://m.youtube.com/watch?v="+movieKey);
+                    startActivity(intent);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -226,13 +236,26 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     }
 
     @Override
+    public void enableShareMenuOption() {
+        if(mShareMenu != null)
+            mShareMenu.setVisible(true);
+    }
+
+    @Override
     public void onListItemClick(int listItemIndex) {
-        GridAdapterVideo gridAdapterVideo = (GridAdapterVideo) mRecyclerViewVideo.getAdapter();
-        if(gridAdapterVideo != null){
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.youtube.com/watch?v="+gridAdapterVideo.getMovieKey(listItemIndex)));
+        if(validateGridAdapterVideo()){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.youtube.com/watch?v="+getGridAdapterVideo().getMovieKey(listItemIndex)));
             startActivity(intent);
         }
-
     }
     //endregion
+
+    public boolean validateGridAdapterVideo(){
+        GridAdapterVideo gridAdapterVideo = getGridAdapterVideo();
+        return gridAdapterVideo != null && gridAdapterVideo.getItemCount() > 0;
+    }
+
+    public GridAdapterVideo getGridAdapterVideo(){
+        return (GridAdapterVideo) mRecyclerViewVideo.getAdapter();
+    }
 }

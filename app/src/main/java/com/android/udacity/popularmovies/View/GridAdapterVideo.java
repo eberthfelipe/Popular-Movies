@@ -21,6 +21,8 @@ public class GridAdapterVideo extends RecyclerView.Adapter<VideoListHolder> {
         this.movieVideos = movieVideos;
         this.mMovieDetailPresenter = movieDetailPresenter;
         this.mListItemOnClickListener = mListItemOnClickListener;
+        if(movieVideos != null && movieVideos.length>0)
+            mMovieDetailPresenter.enableShareMenuOption();
     }
 
     @NonNull
