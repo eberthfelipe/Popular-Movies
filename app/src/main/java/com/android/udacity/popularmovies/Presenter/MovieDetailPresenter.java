@@ -24,7 +24,7 @@ public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter 
 
     @Override
     public void showNoInternetConnection(boolean show) {
-
+        mDetailView.showNoInternetConnection(show);
     }
 
     @Override

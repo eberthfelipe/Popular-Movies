@@ -37,6 +37,7 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
                 //local database has favorite movies
                 mActivityView.setMovieList(mDatabasePresenter.loadFavoriteMovies());
                 mActivityView.hideProgress();
+                mActivityView.showNoInternetConnection(false);
                 break;
         }
     }

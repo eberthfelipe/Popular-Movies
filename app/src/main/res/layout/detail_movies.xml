@@ -95,7 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_movie_description" />
 
             <include
-                android:id="@+id/include5"
+                android:id="@+id/ll_unavailable_internet_detail"
                 layout="@layout/no_internet_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

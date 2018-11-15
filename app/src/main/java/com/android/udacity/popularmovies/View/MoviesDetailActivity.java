@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     private RecyclerView mRecyclerViewReview;
     private ProgressBar mProgressBarVideos;
     private ProgressBar mProgressBarReviews;
+    private LinearLayout mLinearLayoutNoInternet;
     private MenuItem mShareMenu;
     private boolean isFavorite = false;
     private DatabasePresenter mDatabasePresenter;
@@ -142,6 +144,9 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         mProgressBarVideos = findViewById(R.id.pb_loading_videos);
         mProgressBarReviews = findViewById(R.id.pb_loading_reviews);
 
+        // layout which shows: unavailable internet
+        mLinearLayoutNoInternet = findViewById(R.id.ll_unavailable_internet_detail);
+
         // layout manager of recycler view
         LinearLayoutManager layoutManagerVideo = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManagerReview = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -211,7 +216,13 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     @Override
     public void showNoInternetConnection(boolean show) {
-        //TODO: implement NoInternetConnection for detail view
+        if(show){
+            mLinearLayoutNoInternet.setVisibility(View.VISIBLE);
+            hideProgress();
+        } else {
+            mLinearLayoutNoInternet.setVisibility(View.GONE);
+            showProgress();
+        }
     }
 
 

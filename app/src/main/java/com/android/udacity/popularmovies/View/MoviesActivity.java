@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,9 +22,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.udacity.popularmovies.Data.MoviesDataBaseHelper;
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.DatabaseModel;
 import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
@@ -42,7 +39,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
-    private LinearLayout mLinearLayout;
+    private LinearLayout mLinearLayoutNoInternet;
     // 0 = POPULAR | 1 = TOP_RATED
     private int mUserPreference = 0;
 
@@ -83,7 +80,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == resultCode && mUserPreference == 2){
-            boolean isFavorite = data != null ? data.getBooleanExtra("isFavorite", false) : false;
+            boolean isFavorite = data != null && data.getBooleanExtra("isFavorite", false);
             if(!isFavorite){
                 int idMovie = data.getIntExtra("movieID", -1);
                 if(!mMoviesPresenter.isMovieSavedInDB(idMovie)){
@@ -191,7 +188,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     public void showNoInternetConnection(boolean show) {
         if (show) {
-            mLinearLayout.setVisibility(View.VISIBLE);
+            mLinearLayoutNoInternet.setVisibility(View.VISIBLE);
             if(mSwipeRefreshLayout.isRefreshing()){
                 hideProgress();
             }
@@ -199,7 +196,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         }
         else {
             mRecyclerView.setVisibility(View.VISIBLE);
-            mLinearLayout.setVisibility(View.GONE);
+            mLinearLayoutNoInternet.setVisibility(View.GONE);
         }
     }
 
@@ -242,7 +239,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
         mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter, mUserPreference));
-        mLinearLayout = findViewById(R.id.ll_unavailable_internet);
+        mLinearLayoutNoInternet = findViewById(R.id.ll_unavailable_internet);
 
         mOnRefreshListener = getSwipeRefreshListener();
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
