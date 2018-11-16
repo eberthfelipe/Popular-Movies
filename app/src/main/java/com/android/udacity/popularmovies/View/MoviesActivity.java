@@ -1,13 +1,14 @@
 package com.android.udacity.popularmovies.View;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,37 +23,35 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Presenter.MoviesPresenter;
 import com.android.udacity.popularmovies.R;
 
 import java.util.ArrayList;
 
-public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.ListItemClickListener{
+public class MoviesActivity extends AppCompatActivity implements MovieContract.ActivityView, MovieContract.View, MovieContract.ListItemClickListener{
 
     public static final String MOVIE_OBJECT = "movie_object";
-    private static final String USER_PREFERENCE = "user_preference";
+    public static final String USER_PREFERENCE = "user_preference";
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
 //    private ProgressBar mLoadingMoviesProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
-    private LinearLayout mLinearLayout;
+    private LinearLayout mLinearLayoutNoInternet;
     // 0 = POPULAR | 1 = TOP_RATED
     private int mUserPreference = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMoviesPresenter = new MoviesPresenter();
-        mMoviesPresenter.setActivityView(this);
+        mMoviesPresenter = new MoviesPresenter(this);
         init();
-        if(savedInstanceState == null){
+        if(savedInstanceState == null || savedInstanceState.isEmpty()){
             getUserPreferences();
             updateData();
         }
-
     }
 
     @Override
@@ -64,18 +63,35 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
-        setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+        if(!savedInstanceState.isEmpty()){
+            mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
+            setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mRecyclerView != null){
+        if(mRecyclerView != null && mRecyclerView.getAdapter() != null){
             GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
-            outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
+            if(!mGridAdapter.getMovieArrayList().isEmpty()){
+                outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
+                outState.putInt(USER_PREFERENCE, mUserPreference);
+                super.onSaveInstanceState(outState);
+            }
         }
-        outState.putInt(USER_PREFERENCE, mUserPreference);
-        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == resultCode && mUserPreference == 2 && data != null){
+            boolean isFavorite = data.getBooleanExtra("isFavorite", false);
+            if(!isFavorite){
+                int idMovie = data.getIntExtra("movieID", -1);
+                if(!mMoviesPresenter.isMovieSavedInDB(idMovie)){
+                    notifyChanges(idMovie);
+                }
+            }
+        }
     }
 
     //DONE: Add menu for sort preference
@@ -100,6 +116,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             menuItem = menu.findItem(R.id.menu_top_rated);
             menuItem.setChecked(true);
             break;
+            case 2:
+            menuItem = menu.findItem(R.id.menu_favorite_view);
+            menuItem.setChecked(true);
+            break;
         }
         return true;
     }
@@ -116,6 +136,11 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             case R.id.menu_top_rated:
                 if(mUserPreference != 1){
                     setItemMenuClicked(1);
+                }
+                break;
+            case R.id.menu_favorite_view:
+                if(mUserPreference != 2){
+                    setItemMenuClicked(2);
                 }
                 break;
             default:
@@ -167,7 +192,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     public void showNoInternetConnection(boolean show) {
         if (show) {
-            mLinearLayout.setVisibility(View.VISIBLE);
+            mLinearLayoutNoInternet.setVisibility(View.VISIBLE);
             if(mSwipeRefreshLayout.isRefreshing()){
                 hideProgress();
             }
@@ -175,7 +200,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         }
         else {
             mRecyclerView.setVisibility(View.VISIBLE);
-            mLinearLayout.setVisibility(View.GONE);
+            mLinearLayoutNoInternet.setVisibility(View.GONE);
         }
     }
 
@@ -183,11 +208,11 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     public void setMovieList(ArrayList<Movie> movieArrayList) {
         GridAdapter mGridAdapter;
         if(movieArrayList != null) {
-            mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter);
+            mGridAdapter = new GridAdapter(movieArrayList, this, mMoviesPresenter, mUserPreference);
         } else {
             //DONE: implement try again for null array
-            mGridAdapter = new GridAdapter(this, mMoviesPresenter);
-            Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
+            mGridAdapter = new GridAdapter(this, mMoviesPresenter, mUserPreference);
+//            Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
         }
         mRecyclerView.setAdapter(mGridAdapter);
     }
@@ -198,23 +223,27 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     @Override
-    public void onListItemClick(int listItemIndex, Drawable drawable) {
+    public void onListItemClick(int listItemIndex) {
         GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
-        Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
-
-        Intent intent = new Intent(this, MoviesDetailActivity.class);
-        intent.putExtra(MOVIE_OBJECT, movie);
-        startActivity(intent);
+        if (mGridAdapter != null) {
+            Movie movie = new Movie(mGridAdapter.getMovieArrayList().get(listItemIndex));
+            Intent intent = new Intent(this, MoviesDetailActivity.class);
+            intent.putExtra(MOVIE_OBJECT, movie);
+            intent.putExtra(USER_PREFERENCE, mUserPreference);
+            startActivityForResult(intent, Activity.CONTEXT_INCLUDE_CODE);
+        }
     }
     //endregion
+
+    //region View methods
 
     // Method to initialize view and visual components
     private void init(){
         setContentView(R.layout.activity_movies);
         mSwipeRefreshLayout = findViewById(R.id.srl_refresh_movies);
         mRecyclerView = findViewById(R.id.rv_movies_list);
-        mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter));
-        mLinearLayout = findViewById(R.id.ll_unavailable_internet);
+        mRecyclerView.setAdapter(new GridAdapter(this, mMoviesPresenter, mUserPreference));
+        mLinearLayoutNoInternet = findViewById(R.id.ll_unavailable_internet);
 
         mOnRefreshListener = getSwipeRefreshListener();
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
@@ -236,6 +265,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     private void updateData(){
+        setMovieList(null);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -248,6 +278,15 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     private void getUserPreferences(){
         mUserPreference = mMoviesPresenter.getPreferences(this);
     }
+
+    private void notifyChanges(int idMovie) {
+        GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
+        Movie auxMovie = new Movie();
+        auxMovie.setId(idMovie);
+        mGridAdapter.getMovieArrayList().remove(auxMovie);
+        mGridAdapter.notifyDataSetChanged();
+    }
+    //endregion
 
     //region SwipeRefresh Methods
     private SwipeRefreshLayout.OnRefreshListener getSwipeRefreshListener(){

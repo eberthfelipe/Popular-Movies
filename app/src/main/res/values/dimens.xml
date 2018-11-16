@@ -3,5 +3,9 @@
     <dimen name="title_movie">20sp</dimen>
     <dimen name="title_movie_detail">24sp</dimen>
     <dimen name="average_movie_evaluation">18sp</dimen>
+    <dimen name="movie_video_name">16sp</dimen>
     <dimen name="margin_title">3dp</dimen>
+    <dimen name="margin_title_movie">16dp</dimen>
+    <dimen name="title_elevation">4dp</dimen>
+    <dimen name="margin_detail_movie">8dp</dimen>
 </resources>

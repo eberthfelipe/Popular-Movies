@@ -23,28 +23,7 @@
                 tools:listitem="@layout/movie_view"
                 tools:visibility="visible" />
 
-            <LinearLayout
-                android:id="@+id/ll_unavailable_internet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_unavailable_internet" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/internet_off"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="22sp" />
-            </LinearLayout>
+            <include layout="@layout/no_internet_view" />
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

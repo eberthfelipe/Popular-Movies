@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
 import com.android.udacity.popularmovies.Utils.NetworkUtils;
 
@@ -12,12 +13,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 // Class to perform http requests
-class ConnectNetwork extends AsyncTask<URL, Void, ArrayList<Movie>>{
-    private static final String TAG = ConnectNetwork.class.getName();
+class ConnectNetworkMovie extends AsyncTask<URL, Void, ArrayList<Movie>>{
+    private static final String TAG = ConnectNetworkMovie.class.getName();
     private MovieContract.MoviesPresenter mMoviesPresenter;
 
 
-    ConnectNetwork(MovieContract.MoviesPresenter moviesPresenter){
+    ConnectNetworkMovie(MovieContract.MoviesPresenter moviesPresenter){
         this.mMoviesPresenter = moviesPresenter;
     }
 

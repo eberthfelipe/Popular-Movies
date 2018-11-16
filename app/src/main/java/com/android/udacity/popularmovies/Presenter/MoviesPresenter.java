@@ -4,8 +4,10 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.Movie;
+import com.android.udacity.popularmovies.Model.DatabaseModel;
+import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Model.NetworkModel;
+import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Model.UserPreferenceModel;
 
 import java.util.ArrayList;
@@ -14,16 +16,30 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     private MovieContract.NetworkModel mNetworkModel;
     private MovieContract.UserPreferenceModel mUserPreferenceModel;
     private MovieContract.ActivityView mActivityView;
+    private MovieContract.DatabasePresenter mDatabasePresenter;
 
-    public MoviesPresenter(){
+    public MoviesPresenter(MovieContract.ActivityView activityView){
         mNetworkModel = new NetworkModel(this);
+        this.mActivityView = activityView;
+        mDatabasePresenter = new DatabasePresenter(activityView);
     }
 
     //region Model Interactions
     @Override
     public void fetchDataFromMovieDatabase(int preference) {
-        // get User preference for movies: popular or top rated
-        mNetworkModel.fetchDataFromMovieDatabase(preference);
+        // get User preference for movies: popular, top rated or local favorites
+        switch (preference){
+            case 0:
+            case 1:
+                mNetworkModel.fetchDataFromMovieDatabase(preference);
+                break;
+            case 2:
+                //local database has favorite movies
+                mActivityView.setMovieList(mDatabasePresenter.loadFavoriteMovies());
+                mActivityView.hideProgress();
+                mActivityView.showNoInternetConnection(false);
+                break;
+        }
     }
 
     @Override
@@ -43,20 +59,14 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     }
 
     @Override
-    public void retrieveImageSrc(String imgPath, ImageView imageView) {
-        mNetworkModel.retrieveImageSrc(getContext(), imgPath, imageView);
+    public void retrieveImageSrc(String imgPath, Object object, int type) {
+        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
+        picassoModel.retrieveImageSrc(getContext(), imgPath, object, type);
     }
 
-    @Override
-    public void retrieveImageSrc(Context context, String imgPath, ImageView imageView) {
-        mNetworkModel.retrieveImageSrc(context, imgPath, imageView);
-    }
     //endregion
 
     //region View Interactions
-    public void setActivityView(MovieContract.ActivityView mActivityView){
-        this.mActivityView = mActivityView;
-    }
 
     @Override
     public void showProgress() {
@@ -84,6 +94,12 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     @Override
     public void showNoInternetConnection(boolean show) {
         mActivityView.showNoInternetConnection(show);
+    }
+    //endregion
+
+    //region Database Interactions
+    public boolean isMovieSavedInDB(int movieID){
+        return mDatabasePresenter.isMovieAlreadyInserted(movieID);
     }
     //endregion
 }

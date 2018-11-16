@@ -1,14 +1,16 @@
-package com.android.udacity.popularmovies.Model;
+package com.android.udacity.popularmovies.Object;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 
-import com.android.udacity.popularmovies.Utils.MovieDatabaseJsonUtils;
+import java.util.Objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import static com.android.udacity.popularmovies.Object.MovieDetail.*;
+import static com.android.udacity.popularmovies.Object.MovieDetail.CREATOR;
 
 public class Movie implements Parcelable{
     private int id;
@@ -26,6 +28,8 @@ public class Movie implements Parcelable{
     private double popularity;
     //Done: Add imageView object to represent the poster of movie
     private ImageView moviePoster;
+    //class contains movie's videos and reviews
+    private MovieDetail movieDetail;
 
     public Movie() {
         this.id = 0;
@@ -59,6 +63,7 @@ public class Movie implements Parcelable{
         this.voteAverage = movie.voteAverage;
         this.popularity = movie.popularity;
         this.moviePoster = movie.moviePoster;
+        this.movieDetail = movie.movieDetail;
     }
 
     @Override
@@ -78,6 +83,19 @@ public class Movie implements Parcelable{
                 ", voteAverage=" + voteAverage +
                 ", popularity=" + popularity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Movie movie = (Movie) object;
+        return id == movie.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public int getId() {
@@ -192,11 +210,20 @@ public class Movie implements Parcelable{
         this.moviePoster = moviePoster;
     }
 
+    public MovieDetail getMovieDetail() {
+        return movieDetail;
+    }
+
+    public void setMovieDetail(MovieDetail movieDetail) {
+        this.movieDetail = movieDetail;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
@@ -206,8 +233,10 @@ public class Movie implements Parcelable{
         dest.writeString(this.overview);
         dest.writeDouble(this.voteAverage);
         dest.writeString(this.releaseDate);
+        dest.writeTypedObject(this.movieDetail, flags);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private Movie(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
@@ -216,10 +245,12 @@ public class Movie implements Parcelable{
         this.overview = in.readString();
         this.voteAverage = in.readDouble();
         this.releaseDate = in.readString();
+        this.movieDetail = in.readTypedObject(MovieDetail.CREATOR);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR
             = new Parcelable.Creator<Movie>() {
+        @RequiresApi(api = Build.VERSION_CODES.M)
         public Movie createFromParcel(Parcel in) {
             return new Movie(in);
         }
