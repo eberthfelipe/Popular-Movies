@@ -1,10 +1,16 @@
 package com.android.udacity.popularmovies.Object;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
 
 import java.util.Objects;
+
+import static com.android.udacity.popularmovies.Object.MovieDetail.*;
+import static com.android.udacity.popularmovies.Object.MovieDetail.CREATOR;
 
 public class Movie implements Parcelable{
     private int id;
@@ -57,6 +63,7 @@ public class Movie implements Parcelable{
         this.voteAverage = movie.voteAverage;
         this.popularity = movie.popularity;
         this.moviePoster = movie.moviePoster;
+        this.movieDetail = movie.movieDetail;
     }
 
     @Override
@@ -216,6 +223,7 @@ public class Movie implements Parcelable{
         return 0;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
@@ -225,8 +233,10 @@ public class Movie implements Parcelable{
         dest.writeString(this.overview);
         dest.writeDouble(this.voteAverage);
         dest.writeString(this.releaseDate);
+        dest.writeTypedObject(this.movieDetail, flags);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private Movie(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
@@ -235,10 +245,12 @@ public class Movie implements Parcelable{
         this.overview = in.readString();
         this.voteAverage = in.readDouble();
         this.releaseDate = in.readString();
+        this.movieDetail = in.readTypedObject(MovieDetail.CREATOR);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR
             = new Parcelable.Creator<Movie>() {
+        @RequiresApi(api = Build.VERSION_CODES.M)
         public Movie createFromParcel(Parcel in) {
             return new Movie(in);
         }

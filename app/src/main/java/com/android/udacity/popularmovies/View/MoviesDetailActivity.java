@@ -49,6 +49,8 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
     private DatabasePresenter mDatabasePresenter;
     private MovieDetailPresenter mMovieDetailPresenter;
     private Movie mMovie;
+    private int mUserPreference;
+    private final String MOVIE_FAVORITE = "movie_favorite";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,37 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         mDatabasePresenter = new DatabasePresenter(this);
         mMovieDetailPresenter = new MovieDetailPresenter(this);
         init();
-        //TODO: feature: implement onSavedInstance and onRestore
-        setData(getIntent());
+        //DONE: feature: implement onSavedInstance and onRestore for MoviesDetail view
+        if(savedInstanceState == null || savedInstanceState.isEmpty()){
+            setData(getIntent());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(!savedInstanceState.isEmpty()){
+            mMovie = (Movie) savedInstanceState.get(MoviesActivity.MOVIE_OBJECT);
+            setMovieInfo();
+            setMovieDetail(mMovie.getMovieDetail());
+            mUserPreference = savedInstanceState.getInt(MoviesActivity.USER_PREFERENCE);
+            loadMovieImage();
+            isFavorite = savedInstanceState.getBoolean(MOVIE_FAVORITE);
+            hideProgress();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        MovieDetail movieDetail;
+        if(mMovie != null && mRecyclerViewVideo != null && mRecyclerViewReview.getAdapter() != null){
+            movieDetail = new MovieDetail(getGridAdapterVideo().getMovieVideos(), getGridAdapterReview().getMovieReviews());
+            mMovie.setMovieDetail(movieDetail);
+            outState.putParcelable(MoviesActivity.MOVIE_OBJECT, mMovie);
+            outState.putInt(MoviesActivity.USER_PREFERENCE, mUserPreference);
+            outState.putBoolean(MOVIE_FAVORITE, isFavorite);
+            super.onSaveInstanceState(outState);
+        }
     }
 
     @Override
@@ -156,31 +187,38 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     private void setData(Intent intent) {
         mMovie = intent.getParcelableExtra(MoviesActivity.MOVIE_OBJECT);
-        mTextViewMovieTitle.setText(mMovie.getTitle());
-        mTextViewMovieReleaseDate.setText(parseDate(mMovie.getReleaseDate()));
-        mTextViewMovieAverage.setText(String.valueOf(mMovie.getVoteAverage()));
-        mTextViewMovieDescription.setText(mMovie.getOverview());
-        mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
+        setMovieInfo();
 
         //get user preference
-        int userPreference = intent.getIntExtra(MoviesActivity.USER_PREFERENCE, 0);
-
-        /**
-         *  userpreference changes how picasso will load images
-         *  values 0 and 1 load images from web
-         *  value 2 loads images from local database
-         */
-        if(userPreference == 2){
-            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_FILE);
-        } else {
-            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_POSTER);
-        }
+        mUserPreference = intent.getIntExtra(MoviesActivity.USER_PREFERENCE, 0);
+        loadMovieImage();
 
         //Is this movie favorite?
         isFavorite = isMovieFavorite(mMovie.getId());
 
         //load trailers and reviews
         mMovieDetailPresenter.fetchTrailerAndReviewFromMovieDB(mMovie.getId());
+    }
+
+    private void setMovieInfo(){
+        mTextViewMovieTitle.setText(mMovie.getTitle());
+        mTextViewMovieReleaseDate.setText(parseDate(mMovie.getReleaseDate()));
+        mTextViewMovieAverage.setText(String.valueOf(mMovie.getVoteAverage()));
+        mTextViewMovieDescription.setText(mMovie.getOverview());
+        mTextViewMovieDescription.setMovementMethod(new ScrollingMovementMethod()); //make text view scrollable
+    }
+
+    /**
+     *  mUserpreference changes how picasso will load images
+     *  values 0 and 1 load images from web
+     *  value 2 loads images from local database
+     */
+    private void loadMovieImage(){
+        if(mUserPreference == 2){
+            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_FILE);
+        } else {
+            mMovieDetailPresenter.retrieveImageSrc(mMovie.getPosterPath(), mImageViewMoviePoster, PicassoModelSingleton.TYPE_POSTER);
+        }
     }
 
     //Method to get only the year of movies
@@ -225,8 +263,6 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         }
     }
 
-
-
     @Override
     public void setMovieDetail(MovieDetail movieDetail) {
         GridAdapterVideo gridAdapterVideo = null;
@@ -268,5 +304,9 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
 
     public GridAdapterVideo getGridAdapterVideo(){
         return (GridAdapterVideo) mRecyclerViewVideo.getAdapter();
+    }
+
+    public GridAdapterReview getGridAdapterReview(){
+        return (GridAdapterReview) mRecyclerViewReview.getAdapter();
     }
 }

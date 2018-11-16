@@ -44,4 +44,10 @@ public class GridAdapterReview extends RecyclerView.Adapter<ReviewGridHolder> {
         }
         return movieReviews.length;
     }
+
+    public MovieReview[] getMovieReviews(){
+        if(movieReviews != null)
+            return movieReviews;
+        return null;
+    }
 }

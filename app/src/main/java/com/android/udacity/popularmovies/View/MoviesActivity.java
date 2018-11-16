@@ -48,7 +48,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         super.onCreate(savedInstanceState);
         mMoviesPresenter = new MoviesPresenter(this);
         init();
-        if(savedInstanceState == null){
+        if(savedInstanceState == null || savedInstanceState.isEmpty()){
             getUserPreferences();
             updateData();
         }
@@ -63,24 +63,28 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
-        setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+        if(!savedInstanceState.isEmpty()){
+            mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
+            setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if(mRecyclerView != null && mRecyclerView.getAdapter() != null){
             GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
-            outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
+            if(!mGridAdapter.getMovieArrayList().isEmpty()){
+                outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
+                outState.putInt(USER_PREFERENCE, mUserPreference);
+                super.onSaveInstanceState(outState);
+            }
         }
-        outState.putInt(USER_PREFERENCE, mUserPreference);
-        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == resultCode && mUserPreference == 2){
-            boolean isFavorite = data != null && data.getBooleanExtra("isFavorite", false);
+        if(requestCode == resultCode && mUserPreference == 2 && data != null){
+            boolean isFavorite = data.getBooleanExtra("isFavorite", false);
             if(!isFavorite){
                 int idMovie = data.getIntExtra("movieID", -1);
                 if(!mMoviesPresenter.isMovieSavedInDB(idMovie)){
@@ -208,7 +212,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         } else {
             //DONE: implement try again for null array
             mGridAdapter = new GridAdapter(this, mMoviesPresenter, mUserPreference);
-            Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
         }
         mRecyclerView.setAdapter(mGridAdapter);
     }
@@ -261,6 +265,7 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
     }
 
     private void updateData(){
+        setMovieList(null);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
