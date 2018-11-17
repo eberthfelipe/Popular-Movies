@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -33,14 +34,20 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
 
     public static final String MOVIE_OBJECT = "movie_object";
     public static final String USER_PREFERENCE = "user_preference";
+    public static final String RECYCLER_POSITION = "recycler_position";
+    // 0 = POPULAR | 1 = TOP_RATED | 2 = FAVORITES
+    public static final int PREFERENCE_POPULAR = 0;
+    public static final int PREFERENCE_TOP_RATED = 1;
+    public static final int PREFERENCE_FAVORITES = 2;
     private final int MY_PERMISSIONS_INTERNET = 0;
     private MoviesPresenter mMoviesPresenter;
-//    private ProgressBar mLoadingMoviesProgressBar;
+    //    private ProgressBar mLoadingMoviesProgressBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
     private RecyclerView mRecyclerView;
+    private GridLayoutManager mGridLayoutManager;
+    private Parcelable mListState;
     private LinearLayout mLinearLayoutNoInternet;
-    // 0 = POPULAR | 1 = TOP_RATED
     private int mUserPreference = 0;
 
     @Override
@@ -66,16 +73,18 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         if(!savedInstanceState.isEmpty()){
             mUserPreference = savedInstanceState.getInt(USER_PREFERENCE);
             setMovieList(savedInstanceState.<Movie>getParcelableArrayList(MOVIE_OBJECT));
+            mListState = savedInstanceState.getParcelable(RECYCLER_POSITION);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mRecyclerView != null && mRecyclerView.getAdapter() != null){
+        if(mRecyclerView != null && mRecyclerView.getAdapter() != null && mGridLayoutManager != null){
             GridAdapter mGridAdapter = (GridAdapter) mRecyclerView.getAdapter();
             if(!mGridAdapter.getMovieArrayList().isEmpty()){
                 outState.putParcelableArrayList(MOVIE_OBJECT, mGridAdapter.getMovieArrayList());
                 outState.putInt(USER_PREFERENCE, mUserPreference);
+                outState.putParcelable(RECYCLER_POSITION, mGridLayoutManager.onSaveInstanceState());
                 super.onSaveInstanceState(outState);
             }
         }
@@ -108,15 +117,15 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem;
         switch (mUserPreference){
-            case 0:
+            case PREFERENCE_POPULAR:
             menuItem = menu.findItem(R.id.menu_popular);
             menuItem.setChecked(true);
             break;
-            case 1:
+            case PREFERENCE_TOP_RATED:
             menuItem = menu.findItem(R.id.menu_top_rated);
             menuItem.setChecked(true);
             break;
-            case 2:
+            case PREFERENCE_FAVORITES:
             menuItem = menu.findItem(R.id.menu_favorite_view);
             menuItem.setChecked(true);
             break;
@@ -129,18 +138,18 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
         item.setChecked(true);
         switch (item.getItemId()){
             case R.id.menu_popular:
-                if(mUserPreference != 0){
-                    setItemMenuClicked(0);
+                if(mUserPreference != PREFERENCE_POPULAR){
+                    setItemMenuClicked(PREFERENCE_POPULAR);
                 }
                 break;
             case R.id.menu_top_rated:
-                if(mUserPreference != 1){
-                    setItemMenuClicked(1);
+                if(mUserPreference != PREFERENCE_TOP_RATED){
+                    setItemMenuClicked(PREFERENCE_TOP_RATED);
                 }
                 break;
             case R.id.menu_favorite_view:
-                if(mUserPreference != 2){
-                    setItemMenuClicked(2);
+                if(mUserPreference != PREFERENCE_FAVORITES){
+                    setItemMenuClicked(PREFERENCE_FAVORITES);
                 }
                 break;
             default:
@@ -260,8 +269,10 @@ public class MoviesActivity extends AppCompatActivity implements MovieContract.A
             grid_columns = 3;
         }
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, grid_columns);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mGridLayoutManager = new GridLayoutManager(this, grid_columns);
+        if(mListState != null)
+            mGridLayoutManager.onRestoreInstanceState(mListState);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
     }
 
     private void updateData(){
