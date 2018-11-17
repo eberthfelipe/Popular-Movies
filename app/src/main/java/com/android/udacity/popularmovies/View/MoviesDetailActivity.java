@@ -79,7 +79,6 @@ public class MoviesDetailActivity extends AppCompatActivity implements MovieCont
         }
     }
 
-    //TODO: maintain position in nested scroll view when rotate screen
     @Override
     public void onSaveInstanceState(Bundle outState) {
         MovieDetail movieDetail;

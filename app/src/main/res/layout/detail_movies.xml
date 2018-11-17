@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:focusableInTouchMode="true"
+        android:id="@+id/nsv_detail"
         >
 
         <android.support.constraint.ConstraintLayout
