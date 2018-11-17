@@ -17,6 +17,10 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     private MovieContract.UserPreferenceModel mUserPreferenceModel;
     private MovieContract.ActivityView mActivityView;
     private MovieContract.DatabasePresenter mDatabasePresenter;
+    // 0 = POPULAR | 1 = TOP_RATED | 2 = FAVORITES
+    private final int PREFERENCE_POPULAR = 0;
+    private final int PREFERENCE_TOP_RATED = 1;
+    private final int PREFERENCE_FAVORITES = 2;
 
     public MoviesPresenter(MovieContract.ActivityView activityView){
         mNetworkModel = new NetworkModel(this);
@@ -29,11 +33,11 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     public void fetchDataFromMovieDatabase(int preference) {
         // get User preference for movies: popular, top rated or local favorites
         switch (preference){
-            case 0:
-            case 1:
+            case PREFERENCE_POPULAR:
+            case PREFERENCE_TOP_RATED:
                 mNetworkModel.fetchDataFromMovieDatabase(preference);
                 break;
-            case 2:
+            case PREFERENCE_FAVORITES:
                 //local database has favorite movies
                 mActivityView.setMovieList(mDatabasePresenter.loadFavoriteMovies());
                 mActivityView.hideProgress();
