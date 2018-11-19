@@ -1,14 +1,13 @@
 package com.android.udacity.popularmovies.Presenter;
 
 import android.content.Context;
-import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
-import com.android.udacity.popularmovies.Model.DatabaseModel;
-import com.android.udacity.popularmovies.Object.Movie;
 import com.android.udacity.popularmovies.Model.NetworkModel;
 import com.android.udacity.popularmovies.Model.PicassoModelSingleton;
 import com.android.udacity.popularmovies.Model.UserPreferenceModel;
+import com.android.udacity.popularmovies.Object.Movie;
+import com.android.udacity.popularmovies.View.MoviesActivity;
 
 import java.util.ArrayList;
 
@@ -29,11 +28,11 @@ public class MoviesPresenter implements MovieContract.MoviesPresenter {
     public void fetchDataFromMovieDatabase(int preference) {
         // get User preference for movies: popular, top rated or local favorites
         switch (preference){
-            case 0:
-            case 1:
+            case MoviesActivity.PREFERENCE_POPULAR:
+            case MoviesActivity.PREFERENCE_TOP_RATED:
                 mNetworkModel.fetchDataFromMovieDatabase(preference);
                 break;
-            case 2:
+            case MoviesActivity.PREFERENCE_FAVORITES:
                 //local database has favorite movies
                 mActivityView.setMovieList(mDatabasePresenter.loadFavoriteMovies());
                 mActivityView.hideProgress();
