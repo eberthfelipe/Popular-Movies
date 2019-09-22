@@ -1,7 +1,9 @@
 package com.android.udacity.popularmovies.Model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.udacity.popularmovies.MVP.MovieContract;
@@ -14,10 +16,11 @@ import java.io.File;
 public class PicassoModelSingleton implements MovieContract.PicassoModel {
 
     private static PicassoModelSingleton sPicassoModelInstance;
+    private static  Picasso sPicasso;
     // Movies database information
     private static final String MOVIE_DATABASE_API_POSTER_URL = "http://image.tmdb.org/t/p/";
     //Poster sizes:  "w92", "w154", "w185", "w342", "w500", "w780" ou "original".
-    private static final String MOVIE_DATABASE_API_POSTER_SIZE = "/w500";
+    private static final String MOVIE_DATABASE_API_POSTER_SIZE = "w500";
     // Youtube information
     private static final String YOUTUBE_POSTER_URL = "http://img.youtube.com/vi/?/0.jpg";
     // type of images which Picasso can handle
@@ -32,9 +35,16 @@ public class PicassoModelSingleton implements MovieContract.PicassoModel {
         }
     }
 
-    public static synchronized PicassoModelSingleton getInstance() {
+    public static synchronized PicassoModelSingleton getInstance(Context context) {
         if(sPicassoModelInstance == null){
             sPicassoModelInstance = new PicassoModelSingleton();
+            sPicasso = new Picasso.Builder(context).loggingEnabled(false).listener(new Picasso.Listener() {
+                @Override
+                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                    Log.d("Picasso", "onImageLoadFailed: " + uri.toString() + "exception: " +  exception);
+                }
+            }).build();
+            Picasso.setSingletonInstance(sPicasso);
         }
         return sPicassoModelInstance;
     }
