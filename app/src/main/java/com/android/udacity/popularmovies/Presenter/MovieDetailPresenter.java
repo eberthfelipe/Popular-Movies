@@ -39,7 +39,7 @@ public class MovieDetailPresenter implements MovieContract.MovieDetailPresenter 
 
     @Override
     public void retrieveImageSrc(String imgPath, Object object, int type) {
-        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance();
+        PicassoModelSingleton picassoModel = PicassoModelSingleton.getInstance(getContext());
         picassoModel.retrieveImageSrc(getContext(), imgPath, object, type);
     }
 
