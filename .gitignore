@@ -81,9 +81,6 @@ gen-external-apklibs
 
 # Generated files
 
-# Gradle files
-.gradle
-
 # Signing files
 .signing/
 
@@ -102,7 +99,6 @@ gen-external-apklibs
 *.ipr
 *~
 *.swp
-build.gradle
 # Android Patch
 
 # External native build folder generated in Android Studio 2.2 and later
@@ -181,13 +177,10 @@ fabric.properties
 
 
 # End of https://www.gitignore.io/api/android,androidstudio
-*.iml
 .gradle
 /local.properties
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
-.DS_Store
 /build
 /captures
-.externalNativeBuild
